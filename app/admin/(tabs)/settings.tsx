@@ -9,13 +9,17 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { images } from '@constants/images';
 import { Colors } from '@/constants/Colors';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
+import { ThemeContext } from '@/components/ThemeContext';
+import { useContext } from 'react';
 
 
 const SettingsScreen = () => {  
-  const colorScheme = useColorScheme(); // Get the current color scheme
-  const cardBackgroundColor = colorScheme === 'dark' ? Colors.dark.card : Colors.light.card; // Card background color for dark mode
+  const { theme, toggleTheme } = useContext(ThemeContext); // Access theme and toggle function from context
+  const isDarkMode = theme === 'dark';
+  
+  const cardBackgroundColor = theme === 'dark' ? Colors.dark.card : Colors.light.card; // Card background color for dark mode
 
-  const backgroundColor = colorScheme === 'dark' ? Colors.dark.background : Colors.light.background;
+  const backgroundColor = theme === 'dark' ? Colors.dark.background : Colors.light.background;
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
@@ -36,9 +40,7 @@ const SettingsScreen = () => {
                 <ThemedText className=" mx-3 my-1 text-base font-oregular">
                   Dark Mode
                 </ThemedText>
-                <Switch>
-                  
-                </Switch>
+                <Switch value={isDarkMode} onValueChange={toggleTheme} />
               </View>
               
             </View>

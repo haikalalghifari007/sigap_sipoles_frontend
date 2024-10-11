@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import { View, TextInput, useColorScheme, Dimensions } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { View, TextInput, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useWindowDimensions } from 'react-native';
 import { Colors } from '@/constants/Colors';
-
+import { ThemeContext } from './ThemeContext';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -13,22 +12,29 @@ const isTablet = screenWidth >= 768;
 const SearchField = ({
   placeholder = '',
 }) => {
-    const [searchText, setSearchText] = useState('');
-  const colorScheme = useColorScheme(); // Get the current color scheme
-    const textSearchBackgroundColor = colorScheme === 'dark' ? Colors.dark.text : Colors.light.text;// You can use this to detect screen size for conditional styles
-    const outlineColor = colorScheme === 'dark' ? Colors.dark.outline : Colors.light.outline; // Card background color for dark mode 
-
+  const [searchText, setSearchText] = useState('');
+  const { theme } = useContext(ThemeContext); // Get theme from context
+  const textSearchColor = theme === 'dark' ? Colors.dark.text : Colors.light.text; // Text color based on theme
+  const outlineColor = theme === 'dark' ? Colors.dark.outline : Colors.light.outline; // Border color based on theme
+  const placeholderColor = "#838383FF";
   return (
-    <View className={`flex-row items-center border space-x-1 rounded-lg m-3 md:mx-10 px-3 md:px-5 py-1 md:py-2`} style={{ borderColor: outlineColor }}>
-            <Ionicons name="search-outline" size={24} color='#D1D1D1FF' />
-                <TextInput
-                    style={{ flex: 1, marginTop: isTablet? 0 : -4, color: textSearchBackgroundColor }}
-                    className="text-base md:text-lg py-2 font-olight"
-                    placeholder={placeholder}
-                    value={searchText}
-                    onChangeText={setSearchText}
-                />
-            </View>
+    <View 
+      className="flex-row items-center border space-x-1 rounded-lg m-3 md:mx-10 px-3 md:px-5 py-1 md:py-2" 
+      style={{ borderColor: outlineColor }}>
+      
+      {/* Search Icon */}
+      <Ionicons name="search-outline" size={24} color={placeholderColor} />
+
+      {/* Text Input */}
+      <TextInput
+        style={{ flex: 1, marginTop: isTablet ? 0 : -4, color: textSearchColor }}
+        className="text-base md:text-lg py-2 font-olight"
+        placeholder={placeholder}
+        placeholderTextColor={placeholderColor} // Set placeholder color dynamically
+        value={searchText}
+        onChangeText={setSearchText}
+      />
+    </View>
   );
 };
 

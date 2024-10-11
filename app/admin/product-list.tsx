@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, TextInput, FlatList, Text, TouchableOpacity, StyleSheet, useColorScheme, Image, Dimensions } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
@@ -8,6 +8,7 @@ import { Link } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/constants/Colors';
 import SearchField from '@/components/SearchField';
+import { ThemeContext } from '@/components/ThemeContext';
 
 const screenWidth = Dimensions.get('window').width;
 const isTablet = screenWidth >= 768;
@@ -23,11 +24,11 @@ const products = [
 
 
 const ProductListScreen = () => {
-  const colorScheme = useColorScheme(); // Get the current color scheme
-  const cardBackgroundColor = colorScheme === 'dark' ? Colors.dark.card : Colors.light.card; // Card background color for dark mode
-  const textSearchBackgroundColor = colorScheme === 'dark' ? Colors.dark.text : Colors.light.text;
-  const outlineColor = colorScheme === 'dark' ? Colors.dark.outline : Colors.light.outline; // Card background color for dark mode
-  const backgroundColor = colorScheme === 'dark' ? Colors.dark.background : Colors.light.background;
+  const { theme } = useContext(ThemeContext); // Get theme from context
+  const cardBackgroundColor = theme === 'dark' ? Colors.dark.card : Colors.light.card; // Card background color for dark mode
+  const textSearchBackgroundColor = theme === 'dark' ? Colors.dark.text : Colors.light.text;
+  const outlineColor = theme === 'dark' ? Colors.dark.outline : Colors.light.outline; // Card background color for dark mode
+  const backgroundColor = theme === 'dark' ? Colors.dark.background : Colors.light.background;
   const [searchText, setSearchText] = useState('');
 
   return (
@@ -72,7 +73,7 @@ const ProductListScreen = () => {
     <Link href='/admin/product-add' asChild>
     <TouchableOpacity className='absolute bottom-10 right-5'>
       <View style={[{backgroundColor: cardBackgroundColor, borderRadius: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 4, elevation: 4,}]}>
-      <Ionicons name="add" size={50} color="#23ACE3" />
+      <Ionicons name="add" size={isTablet ? 80 : 50} color="#23ACE3" />
 
       </View>
     </TouchableOpacity>

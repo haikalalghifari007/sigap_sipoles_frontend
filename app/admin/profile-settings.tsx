@@ -4,19 +4,17 @@ import { ThemedView } from '@/components/ThemedView';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, Image, Platform, TextInput,TouchableOpacity } from 'react-native';
 import { FlatList,  GestureHandlerRootView } from 'react-native-gesture-handler';
-import { useColorScheme } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { images } from '@constants/images';
-import { styled } from 'nativewind';
-import React, { useState } from 'react';
+
+import React, { useContext, useState } from 'react';
 import { Colors } from '@/constants/Colors';
+import { ThemeContext } from '@/components/ThemeContext';
 
 
 const ProfileSettingScreen = () => {  
-  const colorScheme = useColorScheme(); // Get the current color scheme
+  const { theme } = useContext(ThemeContext); // Get theme from context
 
-  const backgroundColor = colorScheme === 'dark' ? Colors.dark.background : Colors.light.background;
-  const lineColor = colorScheme === 'dark' ? '#FFFFFF' : '#000000';
+  const backgroundColor = theme === 'dark' ? Colors.dark.background : Colors.light.background;
+  const lineColor = theme === 'dark' ? '#FFFFFF' : '#000000';
   const [focusedField, setFocusedField] = useState('');
 
   const handleFocus = (field) => {
@@ -31,7 +29,7 @@ const ProfileSettingScreen = () => {
     return focusedField === field ? 'border-originblue' : 'border-gray-400';
   };
 
-  const cardBackgroundColor = colorScheme === 'dark' ? Colors.dark.card : Colors.light.card; // Card background color for dark mode
+  const cardBackgroundColor = theme === 'dark' ? Colors.dark.card : Colors.light.card; // Card background color for dark mode
   
 
   return (

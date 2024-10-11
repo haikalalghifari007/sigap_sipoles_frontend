@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, TextInput, FlatList, Text, TouchableOpacity, StyleSheet, useColorScheme, Dimensions } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/constants/Colors';
 import SearchField from '@/components/SearchField';
+import { ThemeContext } from '@/components/ThemeContext';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -33,8 +34,8 @@ const TabRoutes = {
 };
 
 const OrderListScreen = () => {  
-  const colorScheme = useColorScheme(); // Get the current color scheme
-  const backgroundColor = colorScheme === 'dark' ? Colors.dark.background : Colors.light.background; 
+  const { theme } = useContext(ThemeContext); // Get theme from context
+  const backgroundColor = theme === 'dark' ? Colors.dark.background : Colors.light.background; 
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: 'All', title: 'All' },
@@ -94,12 +95,12 @@ const OrderListScreen = () => {
 
 // OrderList Component
 const OrderList = ({ filter }) => {
-  const colorScheme = useColorScheme(); // Get the current color scheme
-  const textSearchBackgroundColor = colorScheme === 'dark' ? Colors.dark.text : Colors.light.text;
-  const cardBackgroundColor = colorScheme === 'dark' ? Colors.dark.card : Colors.light.card; // Card background color for dark mode
-  const outlineColor = colorScheme === 'dark' ? Colors.dark.outline : Colors.light.outline; // Card background color for dark mode
+  const { theme } = useContext(ThemeContext); // Get theme from context
+  const textSearchBackgroundColor = theme === 'dark' ? Colors.dark.text : Colors.light.text;
+  const cardBackgroundColor = theme === 'dark' ? Colors.dark.card : Colors.light.card; // Card background color for dark mode
+  const outlineColor = theme === 'dark' ? Colors.dark.outline : Colors.light.outline; // Card background color for dark mode
   const [searchText, setSearchText] = useState('');
-  const backgroundColor = colorScheme === 'dark' ? Colors.dark.background : Colors.light.background; 
+  const backgroundColor = theme === 'dark' ? Colors.dark.background : Colors.light.background; 
 
   const filteredOrders = orders.filter(order =>
     filter === 'All' ? true : order.status === filter

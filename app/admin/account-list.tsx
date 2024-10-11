@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, TextInput, FlatList, Text, TouchableOpacity, StyleSheet, useColorScheme, Image, Dimensions } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Icon } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SearchField from '@/components/SearchField';
+import { ThemeContext } from '@/components/ThemeContext';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -37,9 +38,10 @@ const TabRoutes = {
     Drivers: () => <AccountList filter="Drivers" />,
 };
 
+
 const AccountListScreen = () => {
-    const colorScheme = useColorScheme(); // Get the current color scheme
-    const backgroundColor = colorScheme === 'dark' ? Colors.dark.background : Colors.light.background; // Adjusted for dark mode
+    const { theme } = useContext(ThemeContext); // Get theme from context
+    const backgroundColor = theme === 'dark' ? Colors.dark.background : Colors.light.background; // Adjusted for dark mode
     const [index, setIndex] = useState(0);
     const [routes] = useState([
         { key: 'All', title: 'All' },
@@ -94,11 +96,9 @@ const AccountListScreen = () => {
 
 // AccountList Component
 const AccountList = ({ filter }) => {
-    const colorScheme = useColorScheme(); // Get the current color scheme
-    const textSearchBackgroundColor = colorScheme === 'dark' ? Colors.dark.text : Colors.light.text;
-    const cardBackgroundColor = colorScheme === 'dark' ? '#1C1C1E' : '#fff'; // Card background color for dark mode
-    const outlineColor = colorScheme === 'dark' ? Colors.dark.outline : Colors.light.outline; // Card background color for dark mode
-    const backgroundColor = colorScheme === 'dark' ? Colors.dark.background : Colors.light.background; // Adjusted for dark mode
+    const { theme } = useContext(ThemeContext); // Get theme from context
+    const outlineColor = theme === 'dark' ? Colors.dark.outline : Colors.light.outline; // Card background color for dark mode
+    const backgroundColor = theme === 'dark' ? Colors.dark.background : Colors.light.background; // Adjusted for dark mode
     
     const [searchText, setSearchText] = useState('');
 
@@ -147,9 +147,9 @@ const AccountList = ({ filter }) => {
 
 // RequestList Component for Unverified Accounts
 const RequestList = () => {
-    const colorScheme = useColorScheme(); // Get the current color scheme
+    const { theme } = useContext(ThemeContext); // Get theme from context
     
-    const backgroundColor = colorScheme === 'dark' ? Colors.dark.background : Colors.light.background; // Adjusted for dark mode
+    const backgroundColor = theme === 'dark' ? Colors.dark.background : Colors.light.background; // Adjusted for dark mode
     const [searchText, setSearchText] = useState('');
 
     const filteredAccounts = accounts.filter(account => !account.verified);

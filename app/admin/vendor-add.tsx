@@ -8,13 +8,15 @@ import { useColorScheme } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { images } from '@constants/images';
 import { styled } from 'nativewind';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { ThemeContext } from '@/components/ThemeContext';
+import { Colors } from '@/constants/Colors';
 
 
 const AddVendorScreen = () => {  
-  const colorScheme = useColorScheme(); // Get the current color scheme
+  const { theme } = useContext(ThemeContext); // Get theme from context
 
-  const backgroundColor = colorScheme === 'dark' ? '#161719' : '#FFFFFF';
+  const backgroundColor = theme === 'dark' ? Colors.dark.background : Colors.light.background;
   const [focusedField, setFocusedField] = useState('');
 
   const handleFocus = (field) => {

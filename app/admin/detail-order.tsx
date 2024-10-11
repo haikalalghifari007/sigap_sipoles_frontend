@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from 'expo-router'; // Correct import
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -11,14 +11,15 @@ import { images } from '@constants/images';
 import { Colors } from '@/constants/Colors';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Link } from 'expo-router';
+import { ThemeContext } from '@/components/ThemeContext';
 
 
 
 const DetailOrderScreen = () => {
-  const colorScheme = useColorScheme(); // Get the current color scheme
-  const cardBackgroundColor = colorScheme === 'dark' ? Colors.dark.card : Colors.light.card; // Card background color for dark mode
-  const detailBackgroundColor = colorScheme === 'dark' ? Colors.dark.detail : Colors.light.detail; // Card background color for dark mode
-  const backgroundColor = colorScheme === 'dark' ? Colors.dark.background : Colors.light.background;
+  const { theme } = useContext(ThemeContext); // Get theme from context
+  const cardBackgroundColor = theme === 'dark' ? Colors.dark.card : Colors.light.card; // Card background color for dark mode
+  const detailBackgroundColor = theme === 'dark' ? Colors.dark.detail : Colors.light.detail; // Card background color for dark mode
+  const backgroundColor = theme === 'dark' ? Colors.dark.background : Colors.light.background;
   // Use useLocalSearchParams to get the route params
   const { id, name, status } = useLocalSearchParams();
 

@@ -10,13 +10,15 @@ import { images } from '@constants/images';
 import { Colors } from '@/constants/Colors';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Link } from 'expo-router';
+import { ThemeContext } from '@/components/ThemeContext';
+import { useContext } from 'react';
 
 
 const ProfilesScreen = () => {  
-  const colorScheme = useColorScheme(); // Get the current color scheme
-  const cardBackgroundColor = colorScheme === 'dark' ? Colors.dark.card : Colors.light.card; // Card background color for dark mode
+  const { theme } = useContext(ThemeContext); // Get theme from context
+  const cardBackgroundColor = theme === 'dark' ? Colors.dark.card : Colors.light.card; // Card background color for dark mode
 
-  const backgroundColor = colorScheme === 'dark' ? Colors.dark.background : Colors.light.background;
+  const backgroundColor = theme === 'dark' ? Colors.dark.background : Colors.light.background;
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor }}>

@@ -9,6 +9,8 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { images } from '@constants/images';
 import { Link, LinkProps } from 'expo-router';
 import { Colors } from '@/constants/Colors';
+import { ThemeContext } from '@/components/ThemeContext';
+import { useContext } from 'react';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -68,12 +70,12 @@ const dataTask = [
 ];
 
 const HomeScreen = () => {
-  const colorScheme = useColorScheme(); // Get the current color scheme
+  const { theme } = useContext(ThemeContext); // Get theme from context
 
-  const backgroundColor = colorScheme === 'dark' ? Colors.dark.background : Colors.light.background;
-  const cardBackgroundColor = colorScheme === 'dark' ? Colors.dark.card : Colors.light.card; // Card background color for dark mode
-  const dropBackgroundColor = colorScheme === 'dark' ? Colors.dark.outline : Colors.light.outline; //
-  const seperateColor = colorScheme === 'dark' ? '#FFFFFF' : '#000000'; //
+  const backgroundColor = theme === 'dark' ? Colors.dark.background : Colors.light.background;
+  const cardBackgroundColor = theme === 'dark' ? Colors.dark.card : Colors.light.card; // Card background color for dark mode
+  const dropBackgroundColor = theme === 'dark' ? Colors.dark.outline : Colors.light.outline; //
+  const seperateColor = theme === 'dark' ? '#FFFFFF' : '#000000'; //
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
       <ScrollView
