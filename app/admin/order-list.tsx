@@ -6,6 +6,12 @@ import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/constants/Colors';
+import SearchField from '@/components/SearchField';
+
+const screenWidth = Dimensions.get('window').width;
+
+// Define threshold for tablet size (768px as an example)
+const isTablet = screenWidth >= 768;
 
 // Mock data for orders
 const orders = [
@@ -69,7 +75,7 @@ const OrderListScreen = () => {
                         }}
                         renderLabel={({ route, focused }) => (
                             <Text
-                                className={` flex-1 w-full font-osemibold text-sm ${focused ? 'text-blue-500' : 'text-gray-500'
+                                className={` flex-1 w-full font-osemibold text-sm md:text-base ${focused ? 'text-blue-500' : 'text-gray-500'
                                     }`}
                             >
                                 {route.title}
@@ -101,16 +107,7 @@ const OrderList = ({ filter }) => {
 
   return (
     <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1, backgroundColor }}>
-    <View className={`flex-row items-center border space-x-1 rounded-lg m-3 px-3 py-1`} style={{ borderColor: outlineColor }}>
-            <Ionicons name="search-outline" size={24} color='#D1D1D1FF' />
-                <TextInput
-                    style={{ flex: 1, marginTop: -4, color: textSearchBackgroundColor }}
-                    className="text-base py-2 font-olight"
-                    placeholder="Search order id here"
-                    value={searchText}
-                    onChangeText={setSearchText}
-                />
-            </View>
+    <SearchField placeholder = 'Search order id here'/>
     
     <FlatList 
       data={filteredOrders}
@@ -122,13 +119,13 @@ const OrderList = ({ filter }) => {
           {/* Status indicator */}
           <View style={[styles.statusIndicator, { backgroundColor: item.statusColor }]} />
           <View style={styles.orderDetails}>
-            <ThemedText className="font-omedium text-xl mt-3">{item.name}</ThemedText>
-            <ThemedText className="font-oregular text-xs" style={styles.description}>{item.description}</ThemedText>
+            <ThemedText className="font-omedium text-xl md:text-2xl mt-3">{item.name}</ThemedText>
+            <ThemedText className="font-oregular text-xs md:text-base" style={styles.description}>{item.description}</ThemedText>
             <View style={styles.statusContainer}>
-                <ThemedText className="font-oregular text-xs" style={[styles.statusText, { color: item.statusColor }, { backgroundColor: outlineColor }]}>
+                <ThemedText className="font-oregular text-xs md:text-base" style={[styles.statusText, { color: item.statusColor }, { backgroundColor: outlineColor }]}>
                   {item.status}
                 </ThemedText>
-              <ThemedText className="font-olight text-xs" style={styles.orderId}>#ID {item.id}</ThemedText>
+              <ThemedText className="font-olight text-xs md:text-base" style={styles.orderId}>#ID {item.id}</ThemedText>
             </View>
           </View>
         </View>     
@@ -156,7 +153,7 @@ const styles = StyleSheet.create({
   },
   orderCard: {
     flexDirection: 'row',
-    marginHorizontal: 15,
+    marginHorizontal: isTablet? 40 : 15,
     marginVertical: 10,
     backgroundColor: '#fff',
     borderRadius: 10,

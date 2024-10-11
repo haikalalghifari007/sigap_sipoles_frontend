@@ -10,6 +10,13 @@ import { images } from '@constants/images';
 import { Link, LinkProps } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 
+const screenWidth = Dimensions.get('window').width;
+
+// Define threshold for tablet size (768px as an example)
+const isTablet = screenWidth >= 768;
+
+
+
 const dataFeatures = [
   {
     text: "Account\nList",
@@ -73,43 +80,43 @@ const HomeScreen = () => {
         style={{ minHeight: Dimensions.get('window').height  }}
       >
         <View className="my-3  space-y-2">
-          <View className="px-5 justify-between items-start flex-row mb-6">
+          <View className='   px-5 md:px-12 justify-between items-start flex-row mb-6' >
             <View>
-              <ThemedText className="text-xl font-olight">
+              <ThemedText className="text-xl md:text-3xl font-olight">
                 Welcome,
               </ThemedText>
-              <ThemedText className="text-2xl font-osemibold">
+              <ThemedText className="text-2xl md:text-4xl font-osemibold">
                 Lanjar Samadi Super
               </ThemedText>
             </View>
             <View className="mt-1.5">
               <Image
                 source={images.personimage}
-                className="w-12 h-12"
+                className="w-12 h-12 md:w-20 md:h-20"
               />
             </View>
           </View>
 
-          <View className="mx-5 my-2 px-8 py-3 space-y-3" style={[{ backgroundColor: cardBackgroundColor, borderRadius: 30, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4, elevation: 4, }]}>
+          <View className="mx-5 md:mx-12 my-2 px-8 md:px-14 py-3 space-y-3" style={[{ backgroundColor: cardBackgroundColor, borderRadius: 30, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4, elevation: 4, }]}>
             <View className='space-x-2 flex-row items-center'>
               <Image
                 source={require("../../../assets/images/overview.png")}
-                className="w-10 h-10"
+                className="w-10 h-10 md:w-16 md:h-16"
                 resizeMode='contain'
               />
-              <ThemedText className="text-xl font-osemibold">
+              <ThemedText className="text-xl md:text-3xl font-osemibold">
                 Overview
               </ThemedText>
             </View>
 
             <View className='space-x-2 flex-row'>
             <View className='  p-1 ' style={[{ backgroundColor: dropBackgroundColor, borderRadius: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4,}]}>
-                <ThemedText className="px-3 text-xs font-oregular text-originblue">
+                <ThemedText className="px-3 text-xs md:text-lg font-oregular text-originblue">
                   Monthly
                 </ThemedText>
               </View>
               <View className='  p-1 ' style={[{ backgroundColor: dropBackgroundColor, borderRadius: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4,}]}>
-                <ThemedText className="px-3 text-xs font-oregular text-originblue">
+                <ThemedText className="px-3 text-xs md:text-lg font-oregular text-originblue">
                   Download Report
                 </ThemedText>
               </View>
@@ -117,10 +124,10 @@ const HomeScreen = () => {
 
             <View className='flex-row justify-between'>
               <View>
-                <ThemedText className="text-xs font-oregular">
+                <ThemedText className="text-xs md:text-lg font-oregular">
                   Total Order
                 </ThemedText>
-                <ThemedText className="text-lg font-omedium text-center">
+                <ThemedText className="text-lg md:text-2xl font-omedium text-center">
                   101
                 </ThemedText>
               </View>
@@ -128,10 +135,10 @@ const HomeScreen = () => {
               <View className='rounded-full' style={[{ backgroundColor: seperateColor, width: 1 }]} />
 
               <View>
-                <ThemedText className="text-xs font-oregular">
+                <ThemedText className="text-xs md:text-lg font-oregular">
                   On-Going
                 </ThemedText>
-                <ThemedText className="text-lg font-omedium text-center">
+                <ThemedText className="text-lg md:text-2xl font-omedium text-center">
                   9
                 </ThemedText>
               </View>
@@ -139,10 +146,10 @@ const HomeScreen = () => {
               <View className='rounded-full' style={[{ backgroundColor: seperateColor, width: 1 }]} />
 
               <View>
-                <ThemedText className="text-xs font-oregular">
+                <ThemedText className="text-xs md:text-lg font-oregular">
                   Complete
                 </ThemedText>
-                <ThemedText className="text-lg font-omedium text-center">
+                <ThemedText className="text-lg md:text-2xl font-omedium text-center">
                   91
                 </ThemedText>
               </View>
@@ -154,22 +161,22 @@ const HomeScreen = () => {
 
           {/* end of overview */}
 
-          <ThemedText className="text-2xl font-osemibold px-5">
+          <ThemedText className="text-2xl md:text-4xl font-osemibold px-5 md:px-12">
             Income
           </ThemedText>
 
-          <View className='mx-5 flex-row justify-between'>
+          <View className='mx-5 md:mx-12 flex-row justify-between'>
             <View className=" my-2 py-4 space-y-2 rounded-2xl" style={[{ width: '48%', backgroundColor: cardBackgroundColor, borderRadius: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4,}]}>
               <View className='flex-row px-2'>
                 <Image
                   source={require("../../../assets/images/restimate.png")}
-                  className="w-5 h-5"
+                  className="w-5 h-5 md:w-8 md:h-8"
                 />
-                <ThemedText className="px-2 text-sm font-oregular text-gray-400 ">
+                <ThemedText className="px-2 text-sm md:text-lg font-oregular text-gray-400 ">
                   Estimated Revenue
                 </ThemedText>
               </View>
-              <ThemedText className="px-2 text-base text-center font-omedium ">
+              <ThemedText className="px-2 text-base md:text-xl text-center font-omedium ">
                 Rp 1.024.490.000,-
               </ThemedText>
             </View>
@@ -178,13 +185,13 @@ const HomeScreen = () => {
               <View className='flex-row px-2'>
                 <Image
                   source={require("../../../assets/images/rtemporary.png")}
-                  className="w-5 h-5"
+                  className="w-5 h-5 md:w-8 md:h-8" 
                 />
-                <ThemedText className="px-1 text-sm font-oregular text-gray-400 ">
+                <ThemedText className="px-1 text-sm md:text-lg font-oregular text-gray-400 ">
                   Temporary Revenue
                 </ThemedText>
               </View>
-              <ThemedText className="px-1 text-base text-center font-omedium ">
+              <ThemedText className="px-1 text-base md:text-xl text-center font-omedium ">
                 Rp 924.490.000,-
               </ThemedText>
             </View>
@@ -192,17 +199,17 @@ const HomeScreen = () => {
           </View>
           {/* end of income*/}
 
-          <View className=" py-3 space-y-2 rounded-3xl shadow mx-5 bg-redalert" >
-            <View className='flex-row px-7 items-center' >
+          <View className=" py-3 md:py-8 space-y-2 rounded-3xl shadow mx-5 md:mx-12 bg-redalert" >
+            <View className='flex-row px-7 md:px-20 items-center' >
               <Image
                 source={require("../../../assets/images/issues.png")}
-                className="w-10 h-10"
+                className="w-10 h-10 md:w-16 md:h-16"
               />
-              <ThemedText className="px-2 text-xl font-omedium text-white ">
+              <ThemedText className="px-2 md:px-4 text-xl md:text-3xl font-omedium text-white ">
                 Order Issues
               </ThemedText>
             </View>
-            <ThemedText className="px-1 text-center font-olight text-white " style={[{fontSize: 11 }]}>
+            <ThemedText className="px-1 text-center font-olight text-white text-xs md:text-lg">
               The latest monitoring shows that there are delays in 0 orders.
             </ThemedText>
           </View>
@@ -211,7 +218,7 @@ const HomeScreen = () => {
 
 
 
-          <ThemedText className="text-2xl font-osemibold px-5">
+          <ThemedText className="text-2xl md:text-4xl font-osemibold px-5 md:px-12">
             Main Features
           </ThemedText>
 
@@ -223,32 +230,31 @@ const HomeScreen = () => {
               centerContent={true}
               style={{ paddingVertical: 5 }}
               showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{ gap: 35, paddingHorizontal: 20 }}
+              contentContainerStyle={{  gap: isTablet ? 50 : 20 , paddingHorizontal: 20 }}
               data={dataFeatures}
               keyExtractor={(item, idx) => item.text + idx}
               renderItem={({ item }) => (
                 <View style={{ alignItems: 'center' }}>
                   {/* Add Link component and wrap TouchableOpacity */}
                   <Link href={item.link } asChild>
-                    <TouchableOpacity
+                    <TouchableOpacity className='w-20 h-20 md:w-32 md:h-32'
                       style={{
                         justifyContent: 'center',
                         alignItems: 'center',
-                        width: 70,
-                        height: 70,
+                        
                         backgroundColor: item.color,
                         borderRadius: 20,
                         padding: 10,
                       }}
                     >
-                      <Image
+                      <Image className='w-10 h-10 md:w-20 md:h-20'
                         source={item.image}
-                        style={{ width: 40, height: 40 }}
+                        
                         resizeMode="contain"
                       />
                     </TouchableOpacity>
                   </Link>
-                  <ThemedText className="font-omedium text-center text-xs">
+                  <ThemedText className="font-omedium text-center text-xs md:text-lg">
                     {item.text}
                   </ThemedText>
                 </View>

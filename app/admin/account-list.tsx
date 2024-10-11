@@ -7,6 +7,12 @@ import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 import { Icon } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import SearchField from '@/components/SearchField';
+
+const screenWidth = Dimensions.get('window').width;
+
+// Define threshold for tablet size (768px as an example)
+const isTablet = screenWidth >= 768;
 
 // Mock data for accounts
 const accounts = [
@@ -71,7 +77,7 @@ const AccountListScreen = () => {
                         }}
                         renderLabel={({ route, focused }) => (
                             <Text
-                                className={` flex-1 w-full font-osemibold text-sm ${focused ? 'text-blue-500' : 'text-gray-500'
+                                className={` flex-1 w-full font-osemibold text-sm md:text-base ${focused ? 'text-blue-500' : 'text-gray-500'
                                     }`}
                             >
                                 {route.title}
@@ -103,16 +109,7 @@ const AccountList = ({ filter }) => {
     return (
         <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1, backgroundColor }}>
             
-            <View className={`flex-row items-center border space-x-1 rounded-lg m-3 px-3 py-1`} style={{ borderColor: outlineColor }}>
-            <Ionicons name="search-outline" size={24} color='#D1D1D1FF' />
-                <TextInput
-                    style={{ flex: 1, marginTop: -4, color: textSearchBackgroundColor }}
-                    className="text-base py-2 font-olight"
-                    placeholder="Search account name here"
-                    value={searchText}
-                    onChangeText={setSearchText}
-                />
-            </View>
+            <SearchField placeholder = 'Search account name here'/>
             <FlatList
             
                 data={filteredAccounts}
@@ -121,23 +118,23 @@ const AccountList = ({ filter }) => {
 
                     <View style={[styles.orderCard, { backgroundColor: backgroundColor }]}>
                         <View style={styles.statusIndicator}>
-                            <Image
+                            <Image className='w-20 h-20 md:w-28 md:h-28 rounded-lg'
                                 source={item.image}
-                                style={{ width: 85, height: 85, borderRadius: 10 }}
+                                
                                 resizeMode="contain"
                             />
                         </View>
                         <View style={styles.orderDetails}>
-                            <ThemedText className="font-omedium text-xl"  numberOfLines={1}ellipsizeMode="tail">{item.name}</ThemedText>
-                            <ThemedText className="font-oregular text-lg" style={styles.description}>{item.status}</ThemedText>
+                            <ThemedText className="font-omedium text-xl md:text-2xl"  numberOfLines={1}ellipsizeMode="tail">{item.name}</ThemedText>
+                            <ThemedText className="font-oregular text-lg md:text-xl" style={styles.description}>{item.status}</ThemedText>
                             <View style={styles.statusContainer}>
                                 <TouchableOpacity style={[{ backgroundColor: outlineColor }]} className='flex flex-row space-x-1 items-center p-1 rounded-md'>
-                                    <ThemedText className="font-oregular text-xs text-redalert" >
+                                    <ThemedText className="font-oregular text-xs md:text-base text-redalert" >
                                         Delete Account
                                     </ThemedText>
                                     <Ionicons name='trash' color={"#ef4444"}/>
                                 </TouchableOpacity>
-                                <ThemedText className="font-olight text-xs" style={styles.orderId}>last seen 25 minutes ago</ThemedText>
+                                <ThemedText className="font-olight text-xs md:text-base" style={styles.orderId}>last seen 25 minutes ago</ThemedText>
                             </View>
                         </View>
                     </View>
@@ -151,7 +148,7 @@ const AccountList = ({ filter }) => {
 // RequestList Component for Unverified Accounts
 const RequestList = () => {
     const colorScheme = useColorScheme(); // Get the current color scheme
-    const outlineColor = colorScheme === 'dark' ? Colors.dark.outline : Colors.light.outline; // Card background color for dark mode 
+    
     const backgroundColor = colorScheme === 'dark' ? Colors.dark.background : Colors.light.background; // Adjusted for dark mode
     const [searchText, setSearchText] = useState('');
 
@@ -160,42 +157,33 @@ const RequestList = () => {
     return (
         <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1, backgroundColor }}>
             
-            <View className={`flex-row items-center border space-x-1 rounded-lg m-3 px-3 py-1`} style={{ borderColor: outlineColor }}>
-            <Ionicons name="search-outline" size={24} color='#D1D1D1FF' />
-                <TextInput
-                    style={{ flex: 1, marginTop: -4}}
-                    className="text-base py-2 font-olight"
-                    placeholder="Search account name here"
-                    value={searchText}
-                    onChangeText={setSearchText}
-                />
-            </View>
+            <SearchField placeholder = 'Search account name here'/>
             <FlatList
                 data={filteredAccounts}
                 keyExtractor={item => item.id}
                 renderItem={({ item }) => (
                     <View style={[styles.orderCard, { backgroundColor: backgroundColor }]}>
                         <View style={styles.statusIndicator}>
-                            <Image
+                            <Image className='w-20 h-20 md:w-28 md:h-28 rounded-lg'
                                 source={item.image}
-                                style={{ width: 85, height: 85, borderRadius: 10 }}
+                                
                                 resizeMode="contain"
                             />
                         </View>
                         <View style={styles.orderDetails}>
-                            <ThemedText className="font-omedium text-xl">{item.name}</ThemedText>
-                            <ThemedText className="font-oregular text-lg" style={styles.description}>{item.status}</ThemedText>
+                            <ThemedText className="font-omedium text-xl md:text-2xl">{item.name}</ThemedText>
+                            <ThemedText className="font-oregular text-lg md-text-xl" style={styles.description}>{item.status}</ThemedText>
                             <View className='flex-row'>
-                                <ThemedText className="font-olight text-xs" style={styles.orderId}>Request account 25 minutes ago</ThemedText>
-                                <View className='flex-row flex-1 space-x-2 justify-end'>
+                                <ThemedText className="font-olight text-xs md:text-base" style={styles.orderId}>Request account 25 minutes ago</ThemedText>
+                                <View className='flex-row flex-1 space-x-2 md:space-x-11 justify-end'>
                                     <TouchableOpacity>
                                         <View className='bg-redalert rounded-lg p-1'>
-                                            <Ionicons name="close" size={24} color={"#FFFFFF"} />
+                                            <Ionicons name="close" size={isTablet? 35: 24} color={"#FFFFFF"} />
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity>
                                         <View className='bg-[#28A745] rounded-lg p-1'>
-                                            <Ionicons name="checkmark" size={24} color={"#FFFFFF"} />
+                                            <Ionicons name="checkmark" size={isTablet? 35: 24} color={"#FFFFFF"} />
                                         </View>
                                         
                                     </TouchableOpacity>
@@ -215,7 +203,7 @@ export default AccountListScreen;
 // Styles
 const styles = StyleSheet.create({
     searchInput: {
-        marginHorizontal: 15,
+        marginHorizontal: isTablet? 40 : 15,
         marginVertical: 10,
         padding: 15,
         borderWidth: 1,
@@ -224,7 +212,7 @@ const styles = StyleSheet.create({
     },
     orderCard: {
         flexDirection: 'row',
-        marginHorizontal: 15,
+        marginHorizontal: isTablet? 40 : 15,
         backgroundColor: '#fff',
         borderRadius: 10,
         marginTop: 10,
@@ -232,8 +220,7 @@ const styles = StyleSheet.create({
     statusIndicator: {
         alignItems: 'center',
         justifyContent: 'center',
-        width: 85,
-        height: 85,
+
         borderRadius: 10,
     },
     orderDetails: {

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { View, TextInput, FlatList, Text, TouchableOpacity, StyleSheet, useColorScheme, Image } from 'react-native';
+import { View, TextInput, FlatList, Text, TouchableOpacity, StyleSheet, useColorScheme, Image, Dimensions } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { Ionicons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/constants/Colors';
+import SearchField from '@/components/SearchField';
 
 // Mock data for orders
 const vendors = [
@@ -21,7 +22,8 @@ const vendors = [
 
 ];
 
-
+const screenWidth = Dimensions.get('window').width;
+const isTablet = screenWidth >= 768;
 
 const VendorListScreen = () => {
   const colorScheme = useColorScheme(); // Get the current color scheme
@@ -33,16 +35,7 @@ const VendorListScreen = () => {
 
   return (
     <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1, backgroundColor }}> 
-    <View className={`flex-row items-center border space-x-1 rounded-lg m-3 px-3 py-1`} style={{ borderColor: outlineColor }}>
-            <Ionicons name="search-outline" size={24} color='#D1D1D1FF' />
-                <TextInput
-                    style={{ flex: 1, marginTop: -4, color: textSearchBackgroundColor }}
-                    className="text-base py-2 font-olight"
-                    placeholder="Search vendor name here"
-                    value={searchText}
-                    onChangeText={setSearchText}
-                />
-            </View>
+    <SearchField placeholder = 'Search vendor name here'/>
 
     <FlatList
       data={vendors}
@@ -51,23 +44,23 @@ const VendorListScreen = () => {
         <View style={[styles.orderCard, { backgroundColor: backgroundColor }]}>
           {/* Status indicator */}
           <View style={[styles.statusIndicator, { backgroundColor: cardBackgroundColor }]} >
-              <Image
+              <Image className='w-20 h-20 md:w-28 md:h-28 rounded-lg'
               source={item.image}
-              style={{ width: 80, height: 80, borderRadius: 10 }} // Set the image size and style
+              
               resizeMode="contain"
             />
           </View>
           <View style={styles.orderDetails}>
-            <ThemedText className="font-omedium text-lg">{item.name}</ThemedText>
-            <ThemedText className="font-oregular text-base" style={styles.description}>{item.description}</ThemedText>
+            <ThemedText className="font-omedium text-lg md:text-xl">{item.name}</ThemedText>
+            <ThemedText className="font-oregular text-base md:text-lg" style={styles.description}>{item.description}</ThemedText>
             <View style={styles.statusContainer}>
             <TouchableOpacity style={[{ backgroundColor: outlineColor }]} className='mt-2 flex flex-row space-x-1 items-center p-1 rounded-md'>
-                <ThemedText className="font-oregular text-xs text-[#FAC441]">
+                <ThemedText className="font-oregular text-xs md:text-base text-[#FAC441]">
                   Edit product
                 </ThemedText>
                   <Ionicons name="create-outline" size={16} color={'#FAC441'} />
               </TouchableOpacity>
-              <ThemedText className="font-olight text-xs" style={styles.orderId}>Registered on {item.date}</ThemedText>
+              <ThemedText className="font-olight text-xs md:text-base" style={styles.orderId}>Registered on {item.date}</ThemedText>
             </View>
           </View>
         </View>
@@ -99,8 +92,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   orderCard: {
+    alignItems: 'center',
     flexDirection: 'row',
-    marginHorizontal: 15,
+    marginHorizontal: isTablet? 40 : 15,
     backgroundColor: '#fff',
     borderRadius: 10,
     marginTop: 10,
@@ -108,8 +102,6 @@ const styles = StyleSheet.create({
   },
   statusIndicator: {
     justifyContent: 'center',
-    width: 80,
-    height: 80,
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },

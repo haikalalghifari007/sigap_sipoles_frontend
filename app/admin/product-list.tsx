@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, FlatList, Text, TouchableOpacity, StyleSheet, useColorScheme, Image } from 'react-native';
+import { View, TextInput, FlatList, Text, TouchableOpacity, StyleSheet, useColorScheme, Image, Dimensions } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { Ionicons } from '@expo/vector-icons';
@@ -7,6 +7,10 @@ import { black, white } from 'react-native-paper/lib/typescript/styles/themes/v2
 import { Link } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/constants/Colors';
+import SearchField from '@/components/SearchField';
+
+const screenWidth = Dimensions.get('window').width;
+const isTablet = screenWidth >= 768;
 
 // Mock data for orders
 const products = [
@@ -28,16 +32,7 @@ const ProductListScreen = () => {
 
   return (
     <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1, backgroundColor }}>
-    <View className={`flex-row items-center border space-x-1 rounded-lg m-3 px-3 py-1`} style={{ borderColor: outlineColor }}>
-            <Ionicons name="search-outline" size={24} color='#D1D1D1FF' />
-                <TextInput
-                    style={{ flex: 1, marginTop: -4, color: textSearchBackgroundColor }}
-                    className="text-base py-2 font-olight"
-                    placeholder="Search product name here"
-                    value={searchText}
-                    onChangeText={setSearchText}
-                />
-            </View>
+    <SearchField placeholder = 'Search product name here'/>
 
     <FlatList
       data={products}
@@ -46,24 +41,24 @@ const ProductListScreen = () => {
         <View style={[styles.orderCard, { backgroundColor: backgroundColor }]}>
           {/* Status indicator */}
           <View style={[styles.statusIndicator, { backgroundColor: cardBackgroundColor }]} >
-              <Image
+              <Image className='w-20 h-20 md:w-28 md:h-28 rounded-lg'
               source={item.image}
-              style={{ width: 80, height: 80, borderRadius: 10 }} // Set the image size and style
+              
               resizeMode="contain"
             />
           </View>
           <View style={styles.orderDetails}>
-            <ThemedText className="font-omedium text-lg">{item.name}</ThemedText>
-            <ThemedText className="font-oregular text-base" style={styles.description}>{item.description}</ThemedText>
+            <ThemedText className="font-omedium text-lg md:text-2xl">{item.name}</ThemedText>
+            <ThemedText className="font-oregular text-base md:text-xl" style={styles.description}>{item.description}</ThemedText>
             <View style={styles.statusContainer}>
               <TouchableOpacity style={[{ backgroundColor: outlineColor }]} className='flex flex-row space-x-1 items-center p-1 rounded-md'>
-                <ThemedText className="font-oregular text-xs text-[#FAC441]">
+                <ThemedText className="font-oregular text-xs md:text-base text-[#FAC441]">
                   Edit product
                 </ThemedText>
                   <Ionicons name="create-outline" size={16} color={'#FAC441'} />
               </TouchableOpacity>
               <TouchableOpacity style={[{ backgroundColor: outlineColor }]} className='flex flex-row space-x-1 ml-2 items-center p-1 rounded-md'>
-                <ThemedText className="font-oregular text-xs text-redalert">
+                <ThemedText className="font-oregular text-xs md:text-base text-redalert">
                   Delete product
                 </ThemedText>
                   <Ionicons name="trash-outline" size={16} color={'#Fc366b'} />
@@ -101,7 +96,7 @@ const styles = StyleSheet.create({
   },
   orderCard: {
     flexDirection: 'row',
-    marginHorizontal: 15,
+    marginHorizontal: isTablet? 40 : 15,  
     backgroundColor: '#fff',
     borderRadius: 10,
     marginTop: 10,
@@ -109,8 +104,7 @@ const styles = StyleSheet.create({
   },
   statusIndicator: {
     justifyContent: 'center',
-    width: 80,
-    height: 80,
+
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
