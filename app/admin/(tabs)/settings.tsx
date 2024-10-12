@@ -27,16 +27,16 @@ const SettingsScreen = () => {
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
       <View className="px-5 md:px-12 my-6  space-y-6  " >
         <View>
-            <ThemedText className="text-2xl md:text-4xl font-osemibold">
+            <ThemedText className="text-2xl md:text-4xl font-osemibold text-center">
               Settings
             </ThemedText>
         </View>
 
         <View>
-            <ThemedText className="text-xl md:text-3xl font-omedium">
+            <ThemedText className="text-xl md:text-3xl font-omedium md:mt-8">
               Preferences
             </ThemedText>
-            <View className="flex-row my-2  items-center px-5 md:px-10 py-2 md:py-4" style={[{ backgroundColor: cardBackgroundColor, borderRadius: 30, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4, }]}>
+            <View className="flex-row my-2  items-center px-5 md:px-10 py-2 md:py-4" style={[{ backgroundColor: cardBackgroundColor, borderRadius: 30, shadowColor: '#000', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4, }]}>
               <TabBarIcon name={'contrast'} size={isTablet ? 32 : 24} color={'#23ACE3'} />
               <View className='flex-1 justify-between flex-row items-center'>
                 <ThemedText className=" mx-3 md:mx-5 my-1 text-base md:text-2xl font-oregular">
@@ -52,7 +52,7 @@ const SettingsScreen = () => {
             <ThemedText className="text-xl md:text-3xl font-omedium">
               Notification
             </ThemedText>
-            <View className="flex-row my-2  items-center px-5 md:px-10 py-2 md:py-4" style={[{ backgroundColor: cardBackgroundColor, borderRadius: 30, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4, }]}>
+            <View className="flex-row my-2  items-center px-5 md:px-10 py-2 md:py-4" style={[{ backgroundColor: cardBackgroundColor, borderRadius: 30, shadowColor: '#000', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4, }]}>
               <TabBarIcon name={'notifications-outline'} size={isTablet ? 32 : 24} color={'#23ACE3'} />
               <View className='flex-1 justify-between flex-row items-center'>
                 <ThemedText className=" mx-3 md:mx-5 my-1 text-base md:text-2xl font-oregular">
@@ -70,7 +70,7 @@ const SettingsScreen = () => {
             <ThemedText className="text-xl md:text-3xl font-omedium">
               About
             </ThemedText>
-            <View className="flex-row my-2  items-center px-5 md:px-10 py-2 md:py-4" style={[{ backgroundColor: cardBackgroundColor, borderRadius: 30, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4, }]}>
+            <View className="flex-row my-2  items-center px-5 md:px-10 py-2 md:py-4" style={[{ backgroundColor: cardBackgroundColor, borderRadius: 30, shadowColor: '#000', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4, }]}>
               <TabBarIcon name={'notifications-outline'} size={isTablet ? 32 : 24} color={'#23ACE3'} />
               <View className='flex-1 justify-between flex-row items-center'>
                 <ThemedText className=" mx-3 md:mx-5 my-1 text-base md:text-2xl font-oregular">

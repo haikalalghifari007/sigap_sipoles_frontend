@@ -31,7 +31,9 @@ export default function TabLayout() {
           borderTopWidth: 0, // Remove the border
           
         },
-        tabBarShowLabel: false, // Hide labels on phone sizes (show them on larger screens)
+        tabBarShowLabel: isTablet, // Show labels only on tablets
+        tabBarItemStyle: isTablet ? {flex: 1} : {}, // Arrange icon and text horizontally on tablets
+        tabBarLabelStyle: isTablet ? { marginLeft: 20, fontSize: 18, } : {}, // Add margin to the left of the label on tablets
         headerShown: false,
       }}
     >
@@ -41,6 +43,15 @@ export default function TabLayout() {
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} size={isTablet ? 32 : 24} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="report"
+        options={{
+          title: 'Report',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'headset' : 'headset-outline'} color={color} size={isTablet ? 32 : 24} />
           ),
         }}
       />

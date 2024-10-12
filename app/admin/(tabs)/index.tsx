@@ -84,22 +84,22 @@ const HomeScreen = () => {
         <View className="my-3  space-y-2">
           <View className='   px-5 md:px-12 justify-between items-start flex-row mb-6' >
             <View>
-              <ThemedText className="text-xl md:text-3xl font-olight">
+              <ThemedText className="text-xl md:text-2xl font-olight">
                 Welcome,
               </ThemedText>
-              <ThemedText className="text-2xl md:text-4xl font-osemibold">
+              <ThemedText className="text-2xl md:text-3xl font-osemibold">
                 Lanjar Samadi Super
               </ThemedText>
             </View>
             <View className="mt-1.5">
               <Image
                 source={images.personimage}
-                className="w-12 h-12 md:w-20 md:h-20"
+                className="w-12 h-12 md:w-16 md:h-16"
               />
             </View>
           </View>
 
-          <View className="mx-5 md:mx-12 my-2 px-8 md:px-14 py-3 space-y-3" style={[{ backgroundColor: cardBackgroundColor, borderRadius: 30, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4, elevation: 4, }]}>
+          <View className="mx-5 md:mx-12 my-2 px-8 md:px-14 py-3 space-y-3" style={[{ backgroundColor: cardBackgroundColor, borderRadius: 30, shadowColor: '#000', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.1, shadowRadius: 4, elevation: 4, }]}>
             <View className='space-x-2 flex-row items-center'>
               <Image
                 source={require("../../../assets/images/overview.png")}
@@ -112,12 +112,12 @@ const HomeScreen = () => {
             </View>
 
             <View className='space-x-2 flex-row'>
-            <View className='  p-1 ' style={[{ backgroundColor: dropBackgroundColor, borderRadius: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4,}]}>
+            <View className='  p-1 ' style={[{ backgroundColor: dropBackgroundColor, borderRadius: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4,}]}>
                 <ThemedText className="px-3 text-xs md:text-lg font-oregular text-originblue">
                   Monthly
                 </ThemedText>
               </View>
-              <View className='  p-1 ' style={[{ backgroundColor: dropBackgroundColor, borderRadius: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4,}]}>
+              <View className='  p-1 ' style={[{ backgroundColor: dropBackgroundColor, borderRadius: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4,}]}>
                 <ThemedText className="px-3 text-xs md:text-lg font-oregular text-originblue">
                   Download Report
                 </ThemedText>
@@ -163,12 +163,12 @@ const HomeScreen = () => {
 
           {/* end of overview */}
 
-          <ThemedText className="text-2xl md:text-4xl font-osemibold px-5 md:px-12">
+          <ThemedText className="text-2xl md:text-3xl font-osemibold px-5 md:px-12">
             Income
           </ThemedText>
 
           <View className='mx-5 md:mx-12 flex-row justify-between'>
-            <View className=" my-2 py-4 space-y-2 items-center" style={[{ width: '48%', backgroundColor: cardBackgroundColor, borderRadius: 15, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4,}]}>
+            <View className=" my-2 py-4 space-y-2 items-center" style={[{ width: '48%', backgroundColor: cardBackgroundColor, borderRadius: 15, shadowColor: '#000', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4,}]}>
               <View className='flex-row px-2'>
                 <Image
                   source={require("../../../assets/images/restimate.png")}
@@ -183,7 +183,7 @@ const HomeScreen = () => {
               </ThemedText>
             </View>
 
-            <View className=" my-2 py-4 space-y-2 items-center" style={[{ width: '48%', backgroundColor: cardBackgroundColor,  borderRadius: 15, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4,}]}>
+            <View className=" my-2 py-4 space-y-2 items-center" style={[{ width: '48%', backgroundColor: cardBackgroundColor,  borderRadius: 15, shadowColor: '#000', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4,}]}>
               <View className='flex-row px-2'>
                 <Image
                   source={require("../../../assets/images/rtemporary.png")}
@@ -220,7 +220,7 @@ const HomeScreen = () => {
 
 
 
-          <ThemedText className="text-2xl md:text-4xl font-osemibold px-5 md:px-12">
+          <ThemedText className="text-2xl md:text-3xl font-osemibold px-5 md:px-12">
             Main Features
           </ThemedText>
 
