@@ -168,7 +168,7 @@ const HomeScreen = () => {
           </ThemedText>
 
           <View className='mx-5 md:mx-12 flex-row justify-between'>
-            <View className=" my-2 py-4 space-y-2 rounded-2xl" style={[{ width: '48%', backgroundColor: cardBackgroundColor, borderRadius: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4,}]}>
+            <View className=" my-2 py-4 space-y-2 items-center" style={[{ width: '48%', backgroundColor: cardBackgroundColor, borderRadius: 15, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4,}]}>
               <View className='flex-row px-2'>
                 <Image
                   source={require("../../../assets/images/restimate.png")}
@@ -183,7 +183,7 @@ const HomeScreen = () => {
               </ThemedText>
             </View>
 
-            <View className=" my-2 py-4 space-y-2" style={[{ width: '48%', backgroundColor: cardBackgroundColor,  borderRadius: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4,}]}>
+            <View className=" my-2 py-4 space-y-2 items-center" style={[{ width: '48%', backgroundColor: cardBackgroundColor,  borderRadius: 15, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4,}]}>
               <View className='flex-row px-2'>
                 <Image
                   source={require("../../../assets/images/rtemporary.png")}

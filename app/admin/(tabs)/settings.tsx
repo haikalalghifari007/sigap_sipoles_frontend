@@ -1,4 +1,4 @@
-import { View, Text, Switch } from 'react-native';
+import { View, Text, Switch, Dimensions } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -12,6 +12,8 @@ import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { ThemeContext } from '@/components/ThemeContext';
 import { useContext } from 'react';
 
+const screenWidth = Dimensions.get('window').width; 
+const isTablet = screenWidth >= 768;  
 
 const SettingsScreen = () => {  
   const { theme, toggleTheme } = useContext(ThemeContext); // Access theme and toggle function from context
@@ -23,21 +25,21 @@ const SettingsScreen = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
-      <View className="px-5 my-6  space-y-6  " >
+      <View className="px-5 md:px-12 my-6  space-y-6  " >
         <View>
-            <ThemedText className="text-2xl font-osemibold">
+            <ThemedText className="text-2xl md:text-4xl font-osemibold">
               Settings
             </ThemedText>
         </View>
 
         <View>
-            <ThemedText className="text-xl font-omedium">
+            <ThemedText className="text-xl md:text-3xl font-omedium">
               Preferences
             </ThemedText>
-            <View className="flex-row my-2  items-center px-5 py-2" style={[{ backgroundColor: cardBackgroundColor, borderRadius: 30, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4, }]}>
-              <TabBarIcon name={'contrast'} size={24} color={'#23ACE3'} />
+            <View className="flex-row my-2  items-center px-5 md:px-10 py-2 md:py-4" style={[{ backgroundColor: cardBackgroundColor, borderRadius: 30, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4, }]}>
+              <TabBarIcon name={'contrast'} size={isTablet ? 32 : 24} color={'#23ACE3'} />
               <View className='flex-1 justify-between flex-row items-center'>
-                <ThemedText className=" mx-3 my-1 text-base font-oregular">
+                <ThemedText className=" mx-3 md:mx-5 my-1 text-base md:text-2xl font-oregular">
                   Dark Mode
                 </ThemedText>
                 <Switch value={isDarkMode} onValueChange={toggleTheme} />
@@ -47,13 +49,13 @@ const SettingsScreen = () => {
         </View>
 
         <View>
-            <ThemedText className="text-xl font-omedium">
+            <ThemedText className="text-xl md:text-3xl font-omedium">
               Notification
             </ThemedText>
-            <View className="flex-row my-2  items-center px-5 py-2" style={[{ backgroundColor: cardBackgroundColor, borderRadius: 30, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4, }]}>
-              <TabBarIcon name={'notifications-outline'} size={24} color={'#23ACE3'} />
+            <View className="flex-row my-2  items-center px-5 md:px-10 py-2 md:py-4" style={[{ backgroundColor: cardBackgroundColor, borderRadius: 30, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4, }]}>
+              <TabBarIcon name={'notifications-outline'} size={isTablet ? 32 : 24} color={'#23ACE3'} />
               <View className='flex-1 justify-between flex-row items-center'>
-                <ThemedText className=" mx-3 my-1 text-base font-oregular">
+                <ThemedText className=" mx-3 md:mx-5 my-1 text-base md:text-2xl font-oregular">
                   Push Notification
                 </ThemedText>
                 <Switch>
@@ -65,13 +67,13 @@ const SettingsScreen = () => {
         </View>
 
         <View>
-            <ThemedText className="text-xl font-omedium">
+            <ThemedText className="text-xl md:text-3xl font-omedium">
               About
             </ThemedText>
-            <View className="flex-row my-2  items-center px-5 py-2" style={[{ backgroundColor: cardBackgroundColor, borderRadius: 30, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4, }]}>
-              <TabBarIcon name={'notifications-outline'} size={24} color={'#23ACE3'} />
+            <View className="flex-row my-2  items-center px-5 md:px-10 py-2 md:py-4" style={[{ backgroundColor: cardBackgroundColor, borderRadius: 30, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4, }]}>
+              <TabBarIcon name={'notifications-outline'} size={isTablet ? 32 : 24} color={'#23ACE3'} />
               <View className='flex-1 justify-between flex-row items-center'>
-                <ThemedText className=" mx-3 my-1 text-base font-oregular">
+                <ThemedText className=" mx-3 md:mx-5 my-1 text-base md:text-2xl font-oregular">
                   About
                 </ThemedText>
                 <Switch>
