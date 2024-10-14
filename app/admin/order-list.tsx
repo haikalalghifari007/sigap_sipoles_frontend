@@ -63,7 +63,7 @@ const OrderListScreen = () => {
           <TabBar
                         {...props}
                         scrollEnabled
-                        indicatorStyle={{ backgroundColor: '#00ADEF' }} // Indicator color for selected tab
+                        indicatorStyle={{ backgroundColor: Colors.colorful.blue }} // Indicator color for selected tab
                         style={{ backgroundColor }} // Background color of the tab bar
                         tabStyle={{
                             
@@ -76,7 +76,7 @@ const OrderListScreen = () => {
                         }}
                         renderLabel={({ route, focused }) => (
                             <Text
-                                className={` flex-1 w-full font-osemibold text-sm md:text-base ${focused ? 'text-blue-500' : 'text-gray-500'
+                                className={` flex-1 w-full font-osemibold text-sm md:text-base ${focused ? 'text-originblue' : 'text-gray-500'
                                     }`}
                             >
                                 {route.title}

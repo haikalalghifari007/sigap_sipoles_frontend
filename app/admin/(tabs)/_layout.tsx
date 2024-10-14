@@ -18,7 +18,7 @@ export default function TabLayout() {
         tabBarStyle: {
           backgroundColor: theme === 'dark' ? Colors.dark.card : Colors.light.background, // Dynamic background color for tab bar
           position: 'absolute', // Make the tab bar float
-          bottom: 20, // Position it above the bottom of the screen
+          bottom: 30, // Position it above the bottom of the screen
           marginHorizontal: isTablet? 45 : 20, // Add some horizontal margin for rounded effect
           borderRadius: 20, // Rounded corners for the floating effect
           paddingBottom: 0, // Add some padding to the bottom of the tab bar

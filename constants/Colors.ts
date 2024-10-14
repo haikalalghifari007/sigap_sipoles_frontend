@@ -23,7 +23,7 @@ export const Colors = {
   dark: {
     detail: '#1C1C1E',
     outline: '#2b2b2b',
-    card: '#121213FF',
+    card: '#201F1FFF',
     text: '#ECEDEE',
     background: '#080808FF',
     tint: tintColorDark,

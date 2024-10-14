@@ -19,29 +19,31 @@ const isTablet = screenWidth >= 768;
 
 
 
+
+
 const dataFeatures = [
   {
     text: "Account\nList",
     image: require("../../../assets/images/maccount.png"), // Update with actual path
-    color: "rgba(35, 172, 227, 0.15)", // 15% Blue transparency
+    color: '#23ACE340', // 15% Blue transparency
     link: "/admin/account-list",
   },
   {
     text: "Order\nList",
     image: require("../../../assets/images/morder.png"), // Update with actual path
-    color: "rgba(255, 155, 47, 0.15)",
+    color: "#FAC44140",
     link: "/admin/order-list", // 15% Orange transparency
   },
   {
     text: "Vendor\nList",
     image: require("../../../assets/images/mpayment.png"), // Update with actual path
-    color: "rgba(252, 54, 107, 0.15)", // 15% Pink transparency
+    color: "#FC366B40", // 15% Pink transparency
     link: "/admin/vendor-list",
   },
   {
     text: "Product\nList",
     image: require("../../../assets/images/mproduct.png"), // Update with actual path
-    color: "rgba(129, 83, 188, 0.15)", // 15% Purple transparency
+    color: "#8153BC40", // 15% Purple transparency
     link: "/admin/product-list",
   },
 ];

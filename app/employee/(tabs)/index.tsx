@@ -1,38 +1,53 @@
-import { View, Pressable } from 'react-native';
+import { View, Pressable, ScrollView, Dimensions, TouchableOpacity, FlatList, } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, Image, Platform } from 'react-native';
-import { FlatList, TouchableOpacity, GestureHandlerRootView } from 'react-native-gesture-handler';
+
 import { useColorScheme } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { images } from '@constants/images';
-import { Link } from 'expo-router';
+import { Link, LinkProps } from 'expo-router';
+import { Colors } from '@/constants/Colors';
+import { ThemeContext } from '@/components/ThemeContext';
+import { useContext } from 'react';
+import SearchField from '@/components/SearchField';
+import Slider from '@/components/slider';
+import { carouselItems } from '@/data/orderData';
+
+const screenWidth = Dimensions.get('window').width;
+
+// Define threshold for tablet size (768px as an example)
+const isTablet = screenWidth >= 768;
+
+
+
+
 
 const dataFeatures = [
   {
-    text: "Generate\nQR Code",
-    image: require("../../../assets/images/menuqr.png"), // Update with actual path
-    color: "rgba(35, 172, 227, 0.15)", // 15% Blue transparency
-    link: "/employee/generate-qr",
-  },
-  {
-    text: "Upload\nPayment",
-    image: require("../../../assets/images/menupayment.png"), // Update with actual path
-    color: "rgba(255, 155, 47, 0.15)",
-    link: "/employee/upload-payment", // 15% Orange transparency
+    text: "Account\nList",
+    image: require("../../../assets/images/maccount.png"), // Update with actual path
+    color: '#23ACE340', // 15% Blue transparency
+    link: "/admin/account-list",
   },
   {
     text: "Order\nList",
-    image: require("../../../assets/images/menuorder.png"), // Update with actual path
-    color: "rgba(252, 54, 107, 0.15)", // 15% Pink transparency
-    link: "/employee/order-list",
+    image: require("../../../assets/images/morder.png"), // Update with actual path
+    color: "#FAC44140",
+    link: "/admin/order-list", // 15% Orange transparency
   },
   {
     text: "Vendor\nList",
-    image: require("../../../assets/images/menuvendor.png"), // Update with actual path
-    color: "rgba(129, 83, 188, 0.15)", // 15% Purple transparency
-    link: "/employee/vendor-list",
+    image: require("../../../assets/images/mpayment.png"), // Update with actual path
+    color: "#FC366B40", // 15% Pink transparency
+    link: "/admin/vendor-list",
+  },
+  {
+    text: "Product\nList",
+    image: require("../../../assets/images/mproduct.png"), // Update with actual path
+    color: "#8153BC40", // 15% Purple transparency
+    link: "/admin/product-list",
   },
 ];
 
@@ -59,142 +74,100 @@ const dataTask = [
   },
 ];
 
-const HomeScreen = () => {  
-  const colorScheme = useColorScheme(); // Get the current color scheme
+const HomeScreen = () => {
+  const { theme } = useContext(ThemeContext); // Get theme from context
 
-  const backgroundColor = colorScheme === 'dark' ? '#161719' : '#FFFFFF';
-
+  const backgroundColor = theme === 'dark' ? Colors.dark.background : Colors.light.background;
+  const cardBackgroundColor = theme === 'dark' ? Colors.dark.card : Colors.light.card; // Card background color for dark mode
+  const detailBackgroundColor = theme === 'dark' ? Colors.dark.detail : Colors.light.detail; //
+  const seperateColor = theme === 'dark' ? '#FFFFFF' : '#000000'; //
+  
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor }}>
-      <View className="my-6  space-y-6">
-        <View className="px-5 justify-between items-start flex-row mb-6">
-          <View>
-            <ThemedText className="text-3xl font-olight">
-              Welcome,
-            </ThemedText>
-            <ThemedText className="text-3xl font-osemibold">
-              Lanjar Samadi Wika
-            </ThemedText>
-          </View>
-          <View className="mt-1.5">
-          <Image 
-            source={images.personimage}
-            className="w-12 h-12"         
-          />
-        </View>
-        </View>
-        <View className="flex-row px-8 space-x-6">
-          <View>
-          <ThemedText className="text-2xl font-omedium">
-            Task
-          </ThemedText>
-          </View>
-          <View>
-          <ThemedText className="text-2xl font-omedium">
-                 History
-              </ThemedText>
-          </View>
-        </View>
-        
-        <GestureHandlerRootView>
-      <FlatList
-        horizontal={true}
-        style={{ paddingVertical: 5 }}
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ gap: 12, paddingHorizontal: 20 }}
-        data={dataTask}
-        keyExtractor={(item, idx) => item.text + idx}  // Updated keyExtractor to use 'text'
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              flexDirection: 'column',
-              width: 180,
-              height: 270,
-              backgroundColor: item.color, // Dynamically setting background color
-              borderRadius: 20,
-              padding: 20,
-              shadowColor: '#000',
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.3,
-              shadowRadius: 4,
-              elevation: 4,
-            }}
-            onPress={() => {
-              console.log(item.text);  // Updated to log 'text'
-            }}
-          >
-            <Image
-              source={item.image}
-              style={{ width: 160, height: 160, marginBottom: 10 }} // Set the image size and style
-              resizeMode="contain"
-            />
-            <ThemedText className="font-olight">
-              {item.text}  {/* Updated to display 'text' */}
-            </ThemedText>
-          </TouchableOpacity>
-        )}
-        
-      />
-    </GestureHandlerRootView>
-
-    <ThemedText className="text-3xl font-osemibold px-5">
-              Main Features
-            </ThemedText>
+    <SafeAreaView style={{backgroundColor }}>
+      
+        <View className="my-3  space-y-2">
+          <View className='   px-5 md:px-12 justify-between items-end flex-row mb-6' >
             
+              <ThemedText className="text-lg md:text-xl font-oregular text-gray-400">
+              Welcome, Lanjar Samadi!
+              </ThemedText>
+            
+            
+              <Image
+                source={images.personimage}
+                className="w-12 h-12 md:w-16 md:h-16"
+              />
+            
+          </View>
 
-            <GestureHandlerRootView>
-  <FlatList
-    horizontal={true}
-    style={{ paddingVertical: 5 }}
-    showsHorizontalScrollIndicator={false}
-    contentContainerStyle={{ gap: 20, paddingHorizontal: 20 }}
-    data={dataFeatures}
-    keyExtractor={(item, idx) => item.text + idx}
-    renderItem={({ item }) => (
-      <View style={{ alignItems: 'center' }}>
-        {/* Add Link component and wrap TouchableOpacity */}
-        <Link href={item.link} asChild>
-          <TouchableOpacity
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: 80,
-              height: 80,
-              backgroundColor: item.color,
-              borderRadius: 20,
-              padding: 10,
-              shadowColor: '#000',
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.3,
-              shadowRadius: 4,
-              elevation: 4,
-            }}
-          >
-            <Image
-              source={item.image}
-              style={{ width: 40, height: 40 }}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
-        </Link>
-        <ThemedText className="font-olight">
-          {item.text}
-        </ThemedText>
-      </View>
-    )}
-  />
-</GestureHandlerRootView>
+          <View className="px-5 md:px-12">
+
+            <View className='flex-row -mt-6'>
+              <ThemedText className="text-3xl font-obold">Let's </ThemedText>
+              <ThemedText className="text-3xl font-obold text-originblue">manage</ThemedText>
+            </View>
+            <ThemedText className="text-3xl font-obold">tasks efficiently!</ThemedText>
+          </View>
+
+          {/* end of overview */}
+          <View className='mx-2'>
+
+          <SearchField placeholder='Search a task...'/>
+          </View>
+
+          <ThemedText className="text-2xl md:text-3xl font-osemibold px-5 md:px-12">
+            Features
+          </ThemedText>
+
+          
+          <View className='flex-row justify-between mx-5'>
+
+            <TouchableOpacity>
+              <View className='p-5 rounded-3xl' style={[{ backgroundColor: detailBackgroundColor}]}>
+                <View className='mt-3 rounded-full p-3 bg-[#23ACE340]' style={{ borderColor: Colors.colorful.blue, borderWidth: 1 }}>
+                  <Image source={require("../../../assets/images/fejob.png")} className="w-8 h-8 md:w-16 md:h-16" />
+                </View>
+                <ThemedText className="text-center text-sm md:text-xl font-omedium mt-2">New Job</ThemedText>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+              <View className='p-5 rounded-3xl' style={[{ backgroundColor: detailBackgroundColor}]}>
+                <View className='mt-3 rounded-full p-3 bg-[#FC366B40]' style={{ borderColor: Colors.colorful.red, borderWidth: 1 }}>
+                  <Image source={require("../../../assets/images/feorder.png")} className="w-8 h-8 md:w-16 md:h-16" />
+                </View>
+                <ThemedText className="text-center text-sm md:text-xl font-omedium mt-2">Order List</ThemedText>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+              <View className='p-5 rounded-3xl' style={[{ backgroundColor: detailBackgroundColor}]}>
+                <View className='mt-3 rounded-full p-3 bg-[#FAC44140]' style={{ borderColor: Colors.colorful.yellow, borderWidth: 1 }}>
+                  <Image source={require("../../../assets/images/fepay.png")} className="w-8 h-8 md:w-16 md:h-16" />
+                </View>
+                <ThemedText className="text-center text-sm md:text-xl font-omedium mt-2">Payment</ThemedText>
+              </View>
+            </TouchableOpacity>
 
 
-    
-    
-        
-      </View>
+          </View>
+
+          <ThemedText className="text-2xl md:text-3xl py-3 font-osemibold px-5 md:px-12">
+            Recently
+          </ThemedText>
+
+
+          <Slider itemList={carouselItems}/>
+          
+        <View className='h-40'></View>
+
+        </View>
+
+      
+
+
     </SafeAreaView>
-    
+
   )
 }
 

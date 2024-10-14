@@ -1,15 +1,27 @@
-import React, { useState } from 'react';
-import { View, TextInput, FlatList, Text, TouchableOpacity, StyleSheet, useColorScheme } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { View, TextInput, FlatList, Text, TouchableOpacity, StyleSheet, useColorScheme, Dimensions } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { Link } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Colors } from '@/constants/Colors';
+import SearchField from '@/components/SearchField';
+import { ThemeContext } from '@/components/ThemeContext';
+
+const screenWidth = Dimensions.get('window').width;
+
+// Define threshold for tablet size (768px as an example)
+const isTablet = screenWidth >= 768;
 
 // Mock data for orders
 const orders = [
-  { id: '28293837', name: 'Power Pole Large', status: 'Completed', description: 'Installation was successful on 26/09/24.', statusColor: '#00ADEF' },
+  { id: '28293837', name: 'Power Pole Extra', status: 'Completed', description: 'Installation was successful on 26/09/24.', statusColor: '#00ADEF' },
   { id: '00287423', name: 'Power Pole Large', status: 'On-Going', description: 'In the process of shipping.', statusColor: '#FF9B2F' },
-  { id: '00287127', name: 'Power Pole Large', status: 'In Trouble', description: 'Unexpected problems occurred.', statusColor: '#FC366B' },
-  { id: '09287427', name: 'Power Pole Large', status: 'Unprocessed', description: 'Order not yet processed by vendor.', statusColor: '#8153BC' },
+  { id: '00287127', name: 'Power Pole Medium', status: 'In Trouble', description: 'Unexpected problems occurred.', statusColor: '#FC366B' },
+  { id: '09287427', name: 'Power Pole Small', status: 'Unprocessed', description: 'Order not yet processed by vendor.', statusColor: '#8153BC' },
+  { id: '09227427', name: 'Power Pole Small', status: 'In Trouble', description: 'Got Accident.', statusColor: '#FC366B' },
+  { id: '21293837', name: 'Power Pole Extra', status: 'Completed', description: 'Installation was successful on 20/09/24.', statusColor: '#00ADEF' },
 ];
 
 // Tab navigation setup
@@ -18,17 +30,19 @@ const TabRoutes = {
   Unprocessed: () => <OrderList filter="Unprocessed" />,
   OnGoing: () => <OrderList filter="On-Going" />,
   Completed: () => <OrderList filter="Completed" />,
+  OrderIssues: () => <OrderList filter="In Trouble" />,
 };
 
 const OrderListScreen = () => {  
-  const colorScheme = useColorScheme(); // Get the current color scheme
-  const backgroundColor = colorScheme === 'dark' ? '#161719' : '#FFFFFF';
+  const { theme } = useContext(ThemeContext); // Get theme from context
+  const backgroundColor = theme === 'dark' ? Colors.dark.background : Colors.light.background; 
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: 'All', title: 'All' },
     { key: 'Unprocessed', title: 'Unprocessed' },
     { key: 'OnGoing', title: 'On-Going' },
     { key: 'Completed', title: 'Completed' },
+    { key: 'OrderIssues', title: 'In Trouble' },
   ]);
 
 
@@ -44,26 +58,31 @@ const OrderListScreen = () => {
         navigationState={{ index, routes }}
         renderScene={renderScene}
         onIndexChange={setIndex}
-        initialLayout={{ width: 400 }}
+        initialLayout={{ width: 100 }}
         renderTabBar={props => (
           <TabBar
-            {...props}
-            indicatorStyle={{ backgroundColor: '#00ADEF' }} // Indicator color for selected tab
-            style={{ backgroundColor }} // Background color of the tab bar
-            labelStyle={{
-              fontFamily: 'Outfit-Semibold', // Use the 'Outfit' font family
-              fontSize: 12,
-            }}
-            renderLabel={({ route, focused }) => (
-              <Text
-                className={`text-base font-osemibold text-sm ${
-                  focused ? 'text-blue-500' : 'text-gray-500'
-                }`}
-              >
-                {route.title}
-              </Text>
-            )}
-          />
+                        {...props}
+                        scrollEnabled
+                        indicatorStyle={{ backgroundColor: Colors.colorful.blue }} // Indicator color for selected tab
+                        style={{ backgroundColor }} // Background color of the tab bar
+                        tabStyle={{
+                            
+                            width: Math.min(Dimensions.get('window').width / 4.5), // Set a fixed width for each tab item
+                            justifyContent: 'center', // Center the content of each tab
+                        }}
+                        labelStyle={{
+                            fontFamily: 'Outfit-Semibold', // Use the 'Outfit' font family
+                            
+                        }}
+                        renderLabel={({ route, focused }) => (
+                            <Text
+                                className={` flex-1 w-full font-osemibold text-sm md:text-base ${focused ? 'text-originblue' : 'text-gray-500'
+                                    }`}
+                            >
+                                {route.title}
+                            </Text>
+                        )}
+                    />
         )}
         sceneContainerStyle={{ backgroundColor }} // Set background color for the scene container
         style={{ marginTop: 0 }} // Additional styling if needed
@@ -76,42 +95,38 @@ const OrderListScreen = () => {
 
 // OrderList Component
 const OrderList = ({ filter }) => {
-  const colorScheme = useColorScheme(); // Get the current color scheme
-  const searchBackgroundColor = colorScheme === 'dark' ? '#1C1C1E' : '#fff';  // Adjusted for dark mode
-  const cardBackgroundColor = colorScheme === 'dark' ? '#1C1C1E' : '#fff'; // Card background color for dark mode
-  const outlineColor = colorScheme === 'dark' ? '#2b2b2b' : '#f0f0f0'; // Card background color for dark mode
+  const { theme } = useContext(ThemeContext); // Get theme from context
+  const textSearchBackgroundColor = theme === 'dark' ? Colors.dark.text : Colors.light.text;
+  const cardBackgroundColor = theme === 'dark' ? Colors.dark.card : Colors.light.card; // Card background color for dark mode
+  const outlineColor = theme === 'dark' ? Colors.dark.outline : Colors.light.outline; // Card background color for dark mode
   const [searchText, setSearchText] = useState('');
+  const backgroundColor = theme === 'dark' ? Colors.dark.background : Colors.light.background; 
 
   const filteredOrders = orders.filter(order =>
     filter === 'All' ? true : order.status === filter
   );
 
   return (
-    <View>
-    <TextInput className="font-omedium"
-        style={[styles.searchInput, { backgroundColor: searchBackgroundColor }, { borderColor: outlineColor }]}
-        placeholder="Search order id here"
-        value={searchText}
-        onChangeText={setSearchText}
-      />
-
-    <FlatList
+    <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1, backgroundColor }}>
+    <SearchField placeholder = 'Search order id here'/>
+    
+    <FlatList 
       data={filteredOrders}
       keyExtractor={item => item.id}
       renderItem={({ item }) => (
-        <Link href={{ pathname: "/employee/detail-order", params: { id: item.id, name: item.name, status: item.status } }} asChild>
+        <Link href={{ pathname: "/admin/detail-order", params: { id: item.id, name: item.name, status: item.status } }} asChild>
             <TouchableOpacity>
         <View style={[styles.orderCard, { backgroundColor: cardBackgroundColor }]}>
           {/* Status indicator */}
           <View style={[styles.statusIndicator, { backgroundColor: item.statusColor }]} />
           <View style={styles.orderDetails}>
-            <ThemedText className="font-omedium text-2xl mt-3">{item.name}</ThemedText>
-            <ThemedText className="font-oregular text-sm" style={styles.description}>{item.description}</ThemedText>
+            <ThemedText className="font-omedium text-xl md:text-2xl mt-3">{item.name}</ThemedText>
+            <ThemedText className="font-oregular text-xs md:text-base" style={styles.description}>{item.description}</ThemedText>
             <View style={styles.statusContainer}>
-                <ThemedText className="font-oregular text-sm" style={[styles.statusText, { color: item.statusColor }, { backgroundColor: outlineColor }]}>
+                <ThemedText className="font-oregular text-xs md:text-base" style={[styles.statusText, { color: item.statusColor }, { backgroundColor: outlineColor }]}>
                   {item.status}
                 </ThemedText>
-              <ThemedText className="font-olight text-sm" style={styles.orderId}>#ID {item.id}</ThemedText>
+              <ThemedText className="font-olight text-xs md:text-base" style={styles.orderId}>#ID {item.id}</ThemedText>
             </View>
           </View>
         </View>     
@@ -119,7 +134,8 @@ const OrderList = ({ filter }) => {
         </Link>
       )}
     />
-    </View>
+
+    </SafeAreaView>
   );
 };
 
@@ -138,19 +154,19 @@ const styles = StyleSheet.create({
   },
   orderCard: {
     flexDirection: 'row',
-    marginHorizontal: 15,
+    marginHorizontal: isTablet? 40 : 15,
     marginVertical: 10,
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderRadius: 20,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
   },
   statusIndicator: {
     marginVertical: 15,
-    width: 5,
+    width: 7,
     borderRadius: 10,
   },
   orderDetails: {
