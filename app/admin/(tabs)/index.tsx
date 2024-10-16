@@ -25,25 +25,25 @@ const dataFeatures = [
   {
     text: "Account\nList",
     image: require("../../../assets/images/maccount.png"), // Update with actual path
-    color: '#23ACE340', // 15% Blue transparency
+    color: Colors.colorful.bluetr, // 15% Blue transparency
     link: "/admin/account-list",
   },
   {
     text: "Order\nList",
     image: require("../../../assets/images/morder.png"), // Update with actual path
-    color: "#FAC44140",
+    color: Colors.colorful.yellowtr,
     link: "/admin/order-list", // 15% Orange transparency
   },
   {
     text: "Vendor\nList",
     image: require("../../../assets/images/mpayment.png"), // Update with actual path
-    color: "#FC366B40", // 15% Pink transparency
+    color: Colors.colorful.redtr, // 15% Pink transparency
     link: "/admin/vendor-list",
   },
   {
     text: "Product\nList",
     image: require("../../../assets/images/mproduct.png"), // Update with actual path
-    color: "#8153BC40", // 15% Purple transparency
+    color: Colors.colorful.purpletr, // 15% Purple transparency
     link: "/admin/product-list",
   },
 ];

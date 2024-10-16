@@ -8,6 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/constants/Colors';
 import SearchField from '@/components/SearchField';
 import { ThemeContext } from '@/components/ThemeContext';
+import { carouselItems } from '@/data/orderData';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -15,14 +16,7 @@ const screenWidth = Dimensions.get('window').width;
 const isTablet = screenWidth >= 768;
 
 // Mock data for orders
-const orders = [
-  { id: '28293837', name: 'Power Pole Extra', status: 'Completed', description: 'Installation was successful on 26/09/24.', statusColor: '#00ADEF' },
-  { id: '00287423', name: 'Power Pole Large', status: 'On-Going', description: 'In the process of shipping.', statusColor: '#FF9B2F' },
-  { id: '00287127', name: 'Power Pole Medium', status: 'In Trouble', description: 'Unexpected problems occurred.', statusColor: '#FC366B' },
-  { id: '09287427', name: 'Power Pole Small', status: 'Unprocessed', description: 'Order not yet processed by vendor.', statusColor: '#8153BC' },
-  { id: '09227427', name: 'Power Pole Small', status: 'In Trouble', description: 'Got Accident.', statusColor: '#FC366B' },
-  { id: '21293837', name: 'Power Pole Extra', status: 'Completed', description: 'Installation was successful on 20/09/24.', statusColor: '#00ADEF' },
-];
+
 
 // Tab navigation setup
 const TabRoutes = {
@@ -102,7 +96,7 @@ const OrderList = ({ filter }) => {
   const [searchText, setSearchText] = useState('');
   const backgroundColor = theme === 'dark' ? Colors.dark.background : Colors.light.background; 
 
-  const filteredOrders = orders.filter(order =>
+  const filteredOrders = carouselItems.filter(order =>
     filter === 'All' ? true : order.status === filter
   );
 
@@ -112,21 +106,21 @@ const OrderList = ({ filter }) => {
     
     <FlatList 
       data={filteredOrders}
-      keyExtractor={item => item.id}
+      keyExtractor={item => item.orderId}
       renderItem={({ item }) => (
-        <Link href={{ pathname: "/admin/detail-order", params: { id: item.id, name: item.name, status: item.status } }} asChild>
+        <Link href={{ pathname: "/employee/detail-order", params: { orderId: item.orderId, title: item.title, status: item.status } }} asChild>
             <TouchableOpacity>
         <View style={[styles.orderCard, { backgroundColor: cardBackgroundColor }]}>
           {/* Status indicator */}
           <View style={[styles.statusIndicator, { backgroundColor: item.statusColor }]} />
           <View style={styles.orderDetails}>
-            <ThemedText className="font-omedium text-xl md:text-2xl mt-3">{item.name}</ThemedText>
+            <ThemedText className="font-omedium text-xl md:text-2xl mt-3">{item.title}</ThemedText>
             <ThemedText className="font-oregular text-xs md:text-base" style={styles.description}>{item.description}</ThemedText>
             <View style={styles.statusContainer}>
                 <ThemedText className="font-oregular text-xs md:text-base" style={[styles.statusText, { color: item.statusColor }, { backgroundColor: outlineColor }]}>
                   {item.status}
                 </ThemedText>
-              <ThemedText className="font-olight text-xs md:text-base" style={styles.orderId}>#ID {item.id}</ThemedText>
+              <ThemedText className="font-olight text-xs md:text-base" style={styles.orderId}>#ID {item.orderId}</ThemedText>
             </View>
           </View>
         </View>     

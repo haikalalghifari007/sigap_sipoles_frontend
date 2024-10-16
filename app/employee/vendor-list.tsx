@@ -8,20 +8,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/constants/Colors';
 import SearchField from '@/components/SearchField';
 import { ThemeContext } from '@/components/ThemeContext';
+import { vendorData } from '@/data/vendorData';
 
 // Mock data for orders
-const vendors = [
-  { id: '28293837', date: 'August 22, 2024', name: 'PT RAWRR KRAKATAW', description: 'Ngaglik, Kab Sleman',  image: require("../../assets/images/pt_wika.png")},
-  { id: '00287423', date: 'August 22, 2024', name: 'CV LANCAR JAYA',  description: 'Magelang, Jawa Tengah',  image: require("../../assets/images/pt_wika.png")},
-  { id: '00287127', date: 'August 22, 2024', name: 'PT ANGGAJAYA',  description: 'Surabaya, Jawa Timur',  image: require("../../assets/images/pt_wika.png")},
-  { id: '09287427', date: 'August 22, 2024', name: 'PT SEJAHTERA ABADI', description: 'Semarang, Jawa Tengah',  image: require("../../assets/images/pt_wika.png")},
-  { id: '12345678', date: 'September 15, 2024', name: 'PT BINA MANDIRI', description: 'Bandung, Jawa Barat', image: require("../../assets/images/pt_wika.png")},
-{ id: '87654321', date: 'September 15, 2024', name: 'CV MITRA KARYA', description: 'Yogyakarta, DI Yogyakarta', image: require("../../assets/images/pt_wika.png")},
-{ id: '11223344', date: 'September 15, 2024', name: 'PT CIPTA KARYA', description: 'Denpasar, Bali', image: require("../../assets/images/pt_wika.png")},
-{ id: '44332211', date: 'September 15, 2024', name: 'PT SUMBER REJEKI', description: 'Jakarta Selatan, DKI Jakarta', image: require("../../assets/images/pt_wika.png")},
-{ id: '99887766', date: 'September 15, 2024', name: 'CV BERSAMA JAYA', description: 'Malang, Jawa Timur', image: require("../../assets/images/pt_wika.png")},
-
-];
 
 const screenWidth = Dimensions.get('window').width;
 const isTablet = screenWidth >= 768;
@@ -37,7 +26,7 @@ const VendorListScreen = () => {
     <SearchField placeholder = 'Search vendor name here'/>
 
     <FlatList
-      data={vendors}
+      data={vendorData}
       keyExtractor={item => item.id}
       renderItem={({ item }) => (
         <View style={[styles.orderCard, { backgroundColor: backgroundColor }]}>

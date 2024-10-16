@@ -8,20 +8,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/constants/Colors';
 import SearchField from '@/components/SearchField';
 import { ThemeContext } from '@/components/ThemeContext';
+import { vendorData } from '@/data/vendorData';
 
 // Mock data for orders
-const vendors = [
-  { id: '28293837', date: 'August 22, 2024', name: 'PT RAWRR KRAKATAW', description: 'Ngaglik, Kab Sleman',  image: require("../../assets/images/pt_wika.png")},
-  { id: '00287423', date: 'August 22, 2024', name: 'CV LANCAR JAYA',  description: 'Magelang, Jawa Tengah',  image: require("../../assets/images/pt_wika.png")},
-  { id: '00287127', date: 'August 22, 2024', name: 'PT ANGGAJAYA',  description: 'Surabaya, Jawa Timur',  image: require("../../assets/images/pt_wika.png")},
-  { id: '09287427', date: 'August 22, 2024', name: 'PT SEJAHTERA ABADI', description: 'Semarang, Jawa Tengah',  image: require("../../assets/images/pt_wika.png")},
-  { id: '12345678', date: 'September 15, 2024', name: 'PT BINA MANDIRI', description: 'Bandung, Jawa Barat', image: require("../../assets/images/pt_wika.png")},
-{ id: '87654321', date: 'September 15, 2024', name: 'CV MITRA KARYA', description: 'Yogyakarta, DI Yogyakarta', image: require("../../assets/images/pt_wika.png")},
-{ id: '11223344', date: 'September 15, 2024', name: 'PT CIPTA KARYA', description: 'Denpasar, Bali', image: require("../../assets/images/pt_wika.png")},
-{ id: '44332211', date: 'September 15, 2024', name: 'PT SUMBER REJEKI', description: 'Jakarta Selatan, DKI Jakarta', image: require("../../assets/images/pt_wika.png")},
-{ id: '99887766', date: 'September 15, 2024', name: 'CV BERSAMA JAYA', description: 'Malang, Jawa Timur', image: require("../../assets/images/pt_wika.png")},
-
-];
 
 const screenWidth = Dimensions.get('window').width;
 const isTablet = screenWidth >= 768;
@@ -37,7 +26,7 @@ const VendorListScreen = () => {
     <SearchField placeholder = 'Search vendor name here'/>
 
     <FlatList
-      data={vendors}
+      data={vendorData}
       keyExtractor={item => item.id}
       renderItem={({ item }) => (
         <View style={[styles.orderCard, { backgroundColor: backgroundColor }]}>
@@ -51,21 +40,25 @@ const VendorListScreen = () => {
           </View>
           <View style={styles.orderDetails}>
             <ThemedText className="font-omedium text-lg md:text-xl">{item.name}</ThemedText>
-            <ThemedText className="font-oregular text-base md:text-lg" style={styles.description}>{item.description}</ThemedText>
+            <ThemedText className="font-oregular text-base md:text-lg" style={styles.description}>{item.adress}</ThemedText>
             <View style={styles.statusContainer}>
-            <TouchableOpacity style={[{ backgroundColor: outlineColor }]} className='mt-2 flex flex-row space-x-1 items-center p-1 rounded-md'>
-                <ThemedText className="font-oregular text-xs md:text-base text-[#FAC441]">
-                  Edit product
-                </ThemedText>
-                  <Ionicons name="create-outline" size={16} color={'#FAC441'} />
-              </TouchableOpacity>
+            <View style={[{ backgroundColor: outlineColor }]} className='mt-2 rounded-md'>
+                  <Link href={{ pathname: '/admin/add-edit', params: { type: 'vendor', mode: 'edit', name: item.name, adress: item.adress, personInCharge: item.personInCharge,  phoneNum: item.phoneNum, } }} asChild>
+                    <TouchableOpacity className='flex flex-row space-x-1 items-center p-1'>
+                      <ThemedText className="font-oregular text-xs md:text-base text-[#FAC441]">
+                        Edit Vendor
+                      </ThemedText>
+                      <Ionicons name="create-outline" size={16} color={'#FAC441'} />
+                    </TouchableOpacity>
+                  </Link>
+                </View>
               <ThemedText className="font-olight text-xs md:text-base" style={styles.orderId}>Registered on {item.date}</ThemedText>
             </View>
           </View>
         </View>
       )}
     />
-    <Link href='/admin/vendor-add' asChild>
+    <Link href={{ pathname: '/admin/add-edit', params: { type: 'vendor', mode: 'add' } }} asChild>
     <TouchableOpacity className='absolute bottom-10 md:bottom-14 right-5 md:right-8'>
       <View style={[{backgroundColor: cardBackgroundColor, borderRadius: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 4, elevation: 4,}]}>
       <Ionicons name="add" size={isTablet ? 80 : 50} color="#23ACE3" />

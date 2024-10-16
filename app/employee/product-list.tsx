@@ -9,17 +9,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/constants/Colors';
 import SearchField from '@/components/SearchField';
 import { ThemeContext } from '@/components/ThemeContext';
+import { productData } from '@/data/productData';
 
 const screenWidth = Dimensions.get('window').width;
 const isTablet = screenWidth >= 768;
 
 // Mock data for orders
-const products = [
-  { id: '28293837',  name: 'Power Pole Large', description: 'Type 682-150',  image: require("../../assets/images/tiang.png")},
-  { id: '00287423',  name: 'Power Pole Medium',  description: 'Type 682-100',  image: require("../../assets/images/tiang.png")},
-  { id: '00287127',  name: 'Power Pole Small',  description: 'Type 682-50',  image: require("../../assets/images/tiang.png")},
-  { id: '09287427',  name: 'Power Pole Extra Large', description: 'Type 682-200XL',  image: require("../../assets/images/tiang.png")},
-];
+
 
 
 
@@ -36,7 +32,7 @@ const ProductListScreen = () => {
     <SearchField placeholder = 'Search product name here'/>
 
     <FlatList
-      data={products}
+      data={productData}
       keyExtractor={item => item.id}
       renderItem={({ item }) => (
         <View style={[styles.orderCard, { backgroundColor: backgroundColor }]}>
@@ -50,7 +46,7 @@ const ProductListScreen = () => {
           </View>
           <View style={styles.orderDetails}>
             <ThemedText className="font-omedium text-lg md:text-2xl">{item.name}</ThemedText>
-            <ThemedText className="font-oregular text-base md:text-xl" style={styles.description}>{item.description}</ThemedText>
+            <ThemedText className="font-oregular text-base md:text-xl" style={styles.description}>Type {item.type}</ThemedText>
             <View style={styles.statusContainer}>
               <TouchableOpacity style={[{ backgroundColor: outlineColor }]} className='flex flex-row space-x-1 items-center p-1 rounded-md'>
                 <ThemedText className="font-oregular text-xs md:text-base text-[#FAC441]">

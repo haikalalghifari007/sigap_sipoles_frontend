@@ -131,14 +131,16 @@ const HomeScreen = () => {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity>
-              <View className='p-5 rounded-3xl' style={[{ backgroundColor: detailBackgroundColor}]}>
-                <View className='mt-3 rounded-full p-3 bg-[#FC366B40]' style={{ borderColor: Colors.colorful.red, borderWidth: 1 }}>
-                  <Image source={require("../../../assets/images/feorder.png")} className="w-8 h-8 md:w-16 md:h-16" />
+            <Link  href="/employee/order-list" asChild>
+              <TouchableOpacity>
+                <View className='p-5 rounded-3xl' style={[{ backgroundColor: detailBackgroundColor}]}>
+                  <View className='mt-3 rounded-full p-3 bg-[#FC366B40]' style={{ borderColor: Colors.colorful.red, borderWidth: 1 }}>
+                    <Image source={require("../../../assets/images/feorder.png")} className="w-8 h-8 md:w-16 md:h-16" />
+                  </View>
+                  <ThemedText className="text-center text-sm md:text-xl font-omedium mt-2">Order List</ThemedText>
                 </View>
-                <ThemedText className="text-center text-sm md:text-xl font-omedium mt-2">Order List</ThemedText>
-              </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
+            </Link>
 
             <TouchableOpacity>
               <View className='p-5 rounded-3xl' style={[{ backgroundColor: detailBackgroundColor}]}>

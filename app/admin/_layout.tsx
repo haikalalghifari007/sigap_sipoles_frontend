@@ -61,6 +61,7 @@ export default function RootLayout() {
       <Stack.Screen name="profile-settings" options={{ title: 'Profile Settings' }} />
       <Stack.Screen name="vendor-add" options={{ animation: 'slide_from_bottom', title: 'Add Vendor' }} />
       <Stack.Screen name="product-add" options={{ animation: 'slide_from_bottom', title: 'Add Product' }} />
+      <Stack.Screen name="add-edit" options={{ animation: 'slide_from_bottom'}} />
     </Stack>
   );
 }

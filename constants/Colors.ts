@@ -36,5 +36,11 @@ export const Colors = {
     red: '#FC366B',
     yellow: '#FAC441',
     purple: '#8153BC',
+    green: '#21D475FF',
+    greentr: '#21D47540',
+    bluetr: '#23ACE340',
+    redtr: '#FC366B40',
+    yellowtr: '#FAC44140',
+    purpletr: '#8153BC40',
   },
 };

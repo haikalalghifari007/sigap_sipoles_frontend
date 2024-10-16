@@ -21,10 +21,10 @@ const DetailOrderScreen = () => {
   const detailBackgroundColor = theme === 'dark' ? Colors.dark.detail : Colors.light.detail; // Card background color for dark mode
   const backgroundColor = theme === 'dark' ? Colors.dark.background : Colors.light.background;
   // Use useLocalSearchParams to get the route params
-  const { id, name, status } = useLocalSearchParams();
+  const { orderId, title, status } = useLocalSearchParams();
 
   // Handle the case where the parameters are missing
-  if (!id || !name || !status) {
+  if (!orderId || !title || !status) {
     return (
       <View style={styles.container }>
         <ThemedText className="font-osemibold text-xl">Error: Missing order details</ThemedText>
@@ -43,7 +43,7 @@ const DetailOrderScreen = () => {
           {/* Status indicator */}
           <View style={[styles.statusIndicator,]} />
           <View className="px-3" style={styles.orderDetails}>
-            <ThemedText className="font-omedium text-xl mt-3">{name}</ThemedText>
+            <ThemedText className="font-omedium text-xl mt-3">{title}</ThemedText>
             <ThemedText className="font-olight text-sm">Due to {getDueDate(status)}</ThemedText>
             <View className='flex-row my-4 space-x-2 items-center'>
                 <Image source={require('../../assets/images/profilplaceholder.png')} className='w-10 h-10' />
