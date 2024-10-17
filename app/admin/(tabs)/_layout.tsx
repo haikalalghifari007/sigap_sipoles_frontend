@@ -26,7 +26,7 @@ export default function TabLayout() {
           shadowOffset: { width: 0, height: isTablet ? 0 : 3 }, // Shadow offset for iOS
           shadowOpacity: 0.1, // Shadow opacity for iOS
           shadowRadius: 5, // Shadow radius for iOS
-          elevation: 5, // Elevation for Android (shadow effect)
+          elevation: 2, // Elevation for Android (shadow effect)
           height: isTablet ? 80 : 55, // Set the height of the tab bar
           borderTopWidth: 0, // Remove the border
           

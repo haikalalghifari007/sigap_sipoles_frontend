@@ -45,6 +45,7 @@ export default function RootLayout() {
         <Stack.Screen name="employee" options={{ headerShown: false }} />
         <Stack.Screen name="admin" options={{ headerShown: false }} />
         <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="homepage" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" options={{ headerShown: false }}/>
       </Stack>
     </ThemeProvider>

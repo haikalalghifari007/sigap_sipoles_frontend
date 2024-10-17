@@ -55,9 +55,10 @@ export default function RootLayout() {
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="order-list" options={{ title: 'Order List' }} />
       <Stack.Screen name="vendor-list" options={{ title: 'Vendor List' }} />
-      <Stack.Screen name="detail-order" options={{ title: 'Detail Order' }} />
+      <Stack.Screen name="detail-order" options={{ title: 'Detail Order', headerTintColor: '#000000', headerStyle: { backgroundColor: 'transparent' }}} />
       <Stack.Screen name="product-list" options={{ title: 'Product List' }} />
       <Stack.Screen name="account-list" options={{ title: 'Account List' }} />
+      <Stack.Screen name="documentrecap" options={{ title: 'Rekap Bulanan' }} />
       <Stack.Screen name="profile-settings" options={{ title: 'Profile Settings' }} />
       <Stack.Screen name="vendor-add" options={{ animation: 'slide_from_bottom', title: 'Add Vendor' }} />
       <Stack.Screen name="product-add" options={{ animation: 'slide_from_bottom', title: 'Add Product' }} />

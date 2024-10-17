@@ -118,7 +118,7 @@ const ProductListScreen = () => {
         showCancelButton={true}
         showConfirmButton={true}
         cancelText="Cancel"
-        cancelButtonTextStyle={{ color: Colors.light.text, fontFamily: 'Outfit-Regular', paddingHorizontal: 30, paddingVertical: 10 }}
+        cancelButtonTextStyle={{ color: textSearchBackgroundColor, fontFamily: 'Outfit-Regular', paddingHorizontal: 30, paddingVertical: 10 }}
         cancelButtonStyle={{ backgroundColor: outlineColor, borderRadius: 10 }}
         confirmText="Delete"
         confirmButtonTextStyle={{ fontFamily: 'Outfit-Regular', paddingHorizontal: 30, paddingVertical: 10 }}

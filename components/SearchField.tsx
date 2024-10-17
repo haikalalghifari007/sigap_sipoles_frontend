@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View, TextInput, Dimensions } from 'react-native';
+import { View, TextInput, Dimensions, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '@/constants/Colors';
 import { ThemeContext } from './ThemeContext';
@@ -8,6 +8,8 @@ const screenWidth = Dimensions.get('window').width;
 
 // Define threshold for tablet size (768px as an example)
 const isTablet = screenWidth >= 768;
+
+const isIOS = Platform.OS === 'ios';
 
 const SearchField = ({
   placeholder = '',
@@ -27,7 +29,7 @@ const SearchField = ({
 
       {/* Text Input */}
       <TextInput
-        style={{ flex: 1, marginTop: isTablet ? 0 : -4, color: textSearchColor }}
+        style={{ flex: 1, marginTop: isIOS ? -4 : 0, color: textSearchColor }}
         className="text-base md:text-lg py-2 font-olight"
         placeholder={placeholder}
         placeholderTextColor={placeholderColor} // Set placeholder color dynamically

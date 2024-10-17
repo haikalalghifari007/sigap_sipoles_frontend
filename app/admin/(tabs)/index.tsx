@@ -1,9 +1,9 @@
-import { View, Pressable, ScrollView, Dimensions } from 'react-native';
+import { View, Pressable, ScrollView, Dimensions, TouchableOpacity, } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, Image, Platform } from 'react-native';
-import { FlatList, TouchableOpacity, GestureHandlerRootView } from 'react-native-gesture-handler';
+import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useColorScheme } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { images } from '@constants/images';
@@ -11,12 +11,12 @@ import { Link, LinkProps } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 import { ThemeContext } from '@/components/ThemeContext';
 import { useContext } from 'react';
+import {LineGraph} from "@/components/LineGraph";
 
 const screenWidth = Dimensions.get('window').width;
 
 // Define threshold for tablet size (768px as an example)
 const isTablet = screenWidth >= 768;
-
 
 
 
@@ -48,29 +48,6 @@ const dataFeatures = [
   },
 ];
 
-const dataTask = [
-  {
-    text: "No current activity",
-    image: require("../../../assets/images/taskcolored.png"), // Update with actual path
-    color: "#00ADEF", // Blue background for the first item
-  },
-  {
-    text: "No current activity",
-    image: require("../../../assets/images/taskgreyed.png"), // Update with actual path
-    color: "rgba(100, 100, 100, 0.15)", // 15% Purple transparency
-  },
-  {
-    text: "No current activity",
-    image: require("../../../assets/images/taskgreyed.png"), // Update with actual path
-    color: "rgba(100, 100, 100, 0.15)", // 15% Purple transparency
-  },
-  {
-    text: "No current activity",
-    image: require("../../../assets/images/taskgreyed.png"), // Update with actual path
-    color: "rgba(100, 100, 100, 0.15)", // 15% Purple transparency
-  },
-];
-
 const HomeScreen = () => {
   const { theme } = useContext(ThemeContext); // Get theme from context
 
@@ -81,7 +58,7 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
       <ScrollView
-        style={{ minHeight: Dimensions.get('window').height  }}
+        style={{ minHeight: Dimensions.get('window').height }}
       >
         <View className="my-3  space-y-2">
           <View className='   px-5 md:px-12 justify-between items-start flex-row mb-6' >
@@ -114,12 +91,12 @@ const HomeScreen = () => {
             </View>
 
             <View className='space-x-2 flex-row'>
-            <View className='  p-1 ' style={[{ backgroundColor: dropBackgroundColor, borderRadius: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4,}]}>
+              <View className='  p-1 ' style={[{ backgroundColor: dropBackgroundColor, borderRadius: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4, }]}>
                 <ThemedText className="px-3 text-xs md:text-lg font-oregular text-originblue">
                   Monthly
                 </ThemedText>
               </View>
-              <View className='  p-1 ' style={[{ backgroundColor: dropBackgroundColor, borderRadius: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4,}]}>
+              <View className='  p-1 ' style={[{ backgroundColor: dropBackgroundColor, borderRadius: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4, }]}>
                 <ThemedText className="px-3 text-xs md:text-lg font-oregular text-originblue">
                   Download Report
                 </ThemedText>
@@ -165,12 +142,18 @@ const HomeScreen = () => {
 
           {/* end of overview */}
 
+          {/* <LineGraph 
+          data={[12, 5, 9, 30, 20, 51, 20, 1, 4, 2, 70]}
+          color={Colors.light.originblue}
+          label="Views"
+          stat="120k"/> */}
+
           <ThemedText className="text-2xl md:text-3xl font-osemibold px-5 md:px-12">
             Income
           </ThemedText>
 
           <View className='mx-5 md:mx-12 flex-row justify-between'>
-            <View className=" my-2 py-4 space-y-2 items-center" style={[{ width: '48%', backgroundColor: cardBackgroundColor, borderRadius: 15, shadowColor: '#000', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4,}]}>
+            <View className=" my-2 py-4 space-y-2 items-center" style={[{ width: '48%', backgroundColor: cardBackgroundColor, borderRadius: 15, shadowColor: '#000', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4, }]}>
               <View className='flex-row px-2'>
                 <Image
                   source={require("../../../assets/images/restimate.png")}
@@ -185,20 +168,31 @@ const HomeScreen = () => {
               </ThemedText>
             </View>
 
-            <View className=" my-2 py-4 space-y-2 items-center" style={[{ width: '48%', backgroundColor: cardBackgroundColor,  borderRadius: 15, shadowColor: '#000', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4,}]}>
-              <View className='flex-row px-2'>
-                <Image
-                  source={require("../../../assets/images/rtemporary.png")}
-                  className="w-5 h-5 md:w-8 md:h-8" 
-                />
-                <ThemedText className="px-1 text-sm md:text-lg font-oregular text-gray-400 ">
-                  Temporary Revenue
-                </ThemedText>
-              </View>
-              <ThemedText className="px-1 text-base md:text-xl text-center font-omedium ">
-                Rp 924.490.000,-
-              </ThemedText>
-            </View>
+            <Link href="/admin/documentrecap" asChild>
+              <TouchableOpacity style={{ width: '48%' }}>
+                <View className="px-1 my-2 py-4 space-y-2 items-center" style={[{ backgroundColor: cardBackgroundColor, borderRadius: 15, shadowColor: '#000', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4, }]}>
+                  <View className='flex-row px-2'>
+                    <Image
+                      source={require("../../../assets/images/document.png")}
+                      className="w-5 h-5 md:w-8 md:h-8"
+                    />
+                    <ThemedText className="px-1 text-sm md:text-lg font-omedium  ">
+                      Dokumen Lampau
+                    </ThemedText>
+                  </View>
+                  <ThemedText className="px-1 text-xs md:text-base font-oregular text-center text-gray-400 ">
+                    Telusuri semua dokumen KR
+                  </ThemedText>
+                  <View className='rounded-full mb-2 bg-gray-400' style={[{ flex: 1, height: 1, width: '90%' }]} />
+                  <View className='flex-row item-center align-middle right-1 absolute bottom-1 '>
+                    <ThemedText className=" text-xs md:text-base  font-oregular ">
+                      Lihat Detail
+                    </ThemedText>
+                    <Ionicons name="chevron-forward-outline" size={14} color= {seperateColor} />
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </Link>
 
           </View>
           {/* end of income*/}
@@ -229,23 +223,23 @@ const HomeScreen = () => {
 
           <GestureHandlerRootView>
             <FlatList
-              
+
               horizontal={true}
               centerContent={true}
               style={{ paddingVertical: 5 }}
               showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{  gap: isTablet ? 50 : 20 , paddingHorizontal: 20 }}
+              contentContainerStyle={{ gap: isTablet ? 50 : 20, paddingHorizontal: 20 }}
               data={dataFeatures}
               keyExtractor={(item, idx) => item.text + idx}
               renderItem={({ item }) => (
                 <View style={{ alignItems: 'center' }}>
                   {/* Add Link component and wrap TouchableOpacity */}
-                  <Link href={item.link } asChild>
+                  <Link href={item.link} asChild>
                     <TouchableOpacity className='w-20 h-20 md:w-32 md:h-32'
                       style={{
                         justifyContent: 'center',
                         alignItems: 'center',
-                        
+
                         backgroundColor: item.color,
                         borderRadius: 20,
                         padding: 10,
@@ -253,7 +247,7 @@ const HomeScreen = () => {
                     >
                       <Image className='w-10 h-10 md:w-20 md:h-20'
                         source={item.image}
-                        
+
                         resizeMode="contain"
                       />
                     </TouchableOpacity>
