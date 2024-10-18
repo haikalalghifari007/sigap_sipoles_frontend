@@ -1,204 +1,579 @@
-import { useLocalSearchParams } from 'expo-router'; // Correct import
-import React, { useContext } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import React, { useState } from 'react';
+import { View, TouchableOpacity, Image, StyleSheet, ScrollView, Button, Dimensions, StatusBar } from 'react-native';
+import { useRouter } from 'expo-router';
+import { ThemedText } from '@/components/ThemedText'; // Assuming ThemedText is imported
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
-import { useColorScheme } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { images } from '@constants/images';
-import { Colors } from '@/constants/Colors';
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Link } from 'expo-router';
-import { ThemeContext } from '@/components/ThemeContext';
 
+const { width, height } = Dimensions.get('window');
 
+export default function DetailOrder() {
+  const router = useRouter();
 
-const DetailOrderScreen = () => {
-  const { theme } = useContext(ThemeContext); // Get theme from context
-  const cardBackgroundColor = theme === 'dark' ? Colors.dark.card : Colors.light.card; // Card background color for dark mode
-  const detailBackgroundColor = theme === 'dark' ? Colors.dark.detail : Colors.light.detail; // Card background color for dark mode
-  const backgroundColor = theme === 'dark' ? Colors.dark.background : Colors.light.background;
-  // Use useLocalSearchParams to get the route params
-  const { orderId, title, status } = useLocalSearchParams();
+  // State to manage which track is clicked
+  const [clickedTrack, setClickedTrack] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState('Track Order'); // Track Order or Information
+  const [isExpandedSurya, setIsExpandedSurya] = useState(false); // State for PT SURYA ANUGRAH MEDIA dropdown
+  const [isExpandedSejahtera, setIsExpandedSejahtera] = useState(false); // State for PT SEJAHTERA ABADI dropdown
 
-  // Handle the case where the parameters are missing
-  if (!orderId || !title || !status) {
-    return (
-      <View style={styles.container }>
-        <ThemedText className="font-osemibold text-xl">Error: Missing order details</ThemedText>
-      </View>
-    );
-  }
-
-  const statusSteps = getStatusSteps(status);  // Determine status steps based on status
-
-  return (
-    <View className="px-5 pt-5" style={{ flex: 1, backgroundColor }}>
-      {/* Order Header */}
-
-
-      <View className="py-3" style={[styles.orderCard, { backgroundColor: cardBackgroundColor }]}>
-          {/* Status indicator */}
-          <View style={[styles.statusIndicator,]} />
-          <View className="px-3" style={styles.orderDetails}>
-            <ThemedText className="font-omedium text-xl mt-3">{title}</ThemedText>
-            <ThemedText className="font-olight text-sm">Due to {getDueDate(status)}</ThemedText>
-            <View className='flex-row my-4 space-x-2 items-center'>
-                <Image source={require('../../assets/images/profilplaceholder.png')} className='w-10 h-10' />
-                <View className=''>
-                    <ThemedText className="font-olight text-base">Lanjar Samadi</ThemedText>
-                    <ThemedText className="font-olight text-base">AA 3857 BK</ThemedText>
-                </View>
-            </View>
-          </View>
-          <Image source={require('../../assets/images/tiang.png')} className='rounded-xl mr-5 mt-5 w-24 h-24' />
-        </View>   
-
-
-      {/* Status Timeline */}
-      <View className="mt-12" style={styles.timeline}>
-        {statusSteps.map((step, index) => (
-          <View key={index} style={styles.timelineStep}>
-            <Image source={step.icon} style={styles.icon} />
-            <View className="p-3 flex-1 item-center flex-row justify-between rounded-xl" style={[{ backgroundColor: detailBackgroundColor}]}>
-              <View>
-                <ThemedText className="font-osemibold text-base">{step.label}</ThemedText>
-                <ThemedText className="font-oregular text-sm">{step.Location}</ThemedText>
-              </View>
-              <View>
-                <ThemedText className="font-omedium text-sm text-right">{step.time}</ThemedText>
-                <ThemedText className="font-oregular text-sm">{step.date}</ThemedText>
-              </View>
-            </View>
-          </View>
-        ))}
-      </View>
-
-      {/* Check Payment Button */}
-      <TouchableOpacity style={styles.paymentButton}>
-        <ThemedText className="font-osemibold text-white text-center">Check Payment Status</ThemedText>
-      </TouchableOpacity>
-    </View>
-  );
-};
-
-export default DetailOrderScreen;
-
-// Helper functions to generate the timeline and due date
-const getStatusSteps = (status) => {
-  const steps = [
-    {
-      label: 'Order Received',
-      date: '24/09/2024',
-      time: '11:30',
-      Location: 'Gejayan Street',
-      icon: require('../../assets/images/order-received.png'),
-    },
+  // Track order options
+  const trackOrders = [
+    { key: 'orderRecieve', label: 'Order Recieve' },
+    { key: 'departure', label: 'Departure' },
+    { key: 'orderHasArrived', label: 'Order Has Arrived' },
+    { key: 'Installation', label: 'Installation', time: '16.00 WIB', date: '26/09/2024', status: 'Sedang memasang' },
+    { key: 'completeInstallation', label: 'Complete Installation' }
   ];
 
-  if (status === 'On-Going' || status === 'Completed') {
-    steps.push(
-      {
-        label: 'Departure',
-        date: '23/09/2024',
-        time: '23:30',
-      Location: 'Gejayan Street',
-        icon: require('../../assets/images/departure.png'),
-      },
-      {
-        label: 'Order Has Arrived',
-        date: '24/09/2024',
-        time: '07:30',
-        Location: 'Gejayan Street',
-        icon: require('../../assets/images/arrived.png'),
-      }
-    );
-  }
+  const handleTrackClick = (trackKey: string) => {
+    // Set clicked track; only one can be active at a time
+    setClickedTrack(clickedTrack === trackKey ? null : trackKey);
+  };
 
-  if (status === 'Completed') {
-    steps.push({
-      label: 'Completed Installation',
-      date: '24/09/2024',
-      time: '11:30',
-      Location: 'Gejayan Street',
-      icon: require('../../assets/images/completed.png'),
-    });
-  }
+  const handleToggleSurya = () => {
+    setIsExpandedSurya(!isExpandedSurya);
+  };
 
-  return steps;
-};
+  const handleToggleSejahtera = () => {
+    setIsExpandedSejahtera(!isExpandedSejahtera);
+  };
 
-const getDueDate = (status) => {
-  switch (status) {
-    case 'Completed':
-      return '24 September 2024';
-    case 'On-Going':
-      return '23 September 2024';
-    default:
-      return '22 September 2024';
-  }
-};
+  return (
+    <SafeAreaView edges={['bottom', 'left', 'right']} style={styles.container}>
+      {/* Scrollable Content Area */}
+      <ScrollView contentContainerStyle={styles.content}>
+        <Image source={require('../../assets/images/latar_detail.png')} style={styles.backgroundImage} />
 
-// Styles
+        {/* Custom Header */}
+        
+
+        {/* Order Information Container */}
+        <View style={styles.orderContainer}>
+          <View style={styles.tabContainer}>
+            {/* Tab Navigation */}
+            <TouchableOpacity
+              style={activeTab === 'Track Order' ? styles.tabButtonActive : styles.tabButtonInactive}
+              onPress={() => setActiveTab('Track Order')}
+            >
+              <ThemedText className='text-xl lg:text-3xl' style={activeTab === 'Track Order' ? styles.tabTextActive : styles.tabTextInactive}>
+                Track Order
+              </ThemedText>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={activeTab === 'Information' ? styles.tabButtonActive : styles.tabButtonInactive}
+              onPress={() => setActiveTab('Information')}
+            >
+              <ThemedText className='text-xl lg:text-3xl font-oregular' style={activeTab === 'Information' ? styles.tabTextActive : styles.tabTextInactive}>
+                Information
+              </ThemedText>
+            </TouchableOpacity>
+          </View>
+
+          {/* Content Based on Active Tab */}
+          {activeTab === 'Track Order' ? (
+            trackOrders.map((track, index) => (
+              <View key={track.key} style={styles.trackWrapper}>
+                {/* Left Circle & Line Container */}
+                <View style={styles.leftContainer}>
+                  <View style={[styles.circle, clickedTrack === track.key && styles.circleActive]} />
+                  {index !== trackOrders.length - 1 && <View style={styles.verticalLine} />}
+                </View>
+
+                {/* Track Content */}
+                <TouchableOpacity
+                  onPress={() => handleTrackClick(track.key)}
+                  style={clickedTrack === track.key ? styles.trackContainerActive : styles.trackContainerInactive}
+                >
+                  {/* Main Track Content */}
+                  <View style={styles.trackContent}>
+                    {/* Left Content: Title and Subtext */}
+                    <View style={styles.trackInfo}>
+                      <ThemedText className='text-xl lg:text-4xl' style={styles.orderText}>{track.label}</ThemedText>
+                      <ThemedText className='text-sm lg:text-xl' style={styles.orderSubText}>Belum Di Proses</ThemedText>
+                    </View>
+
+                    {/* Right Content: Time and Date */}
+                    <View style={styles.dateTimeContainer}>
+                      <ThemedText className='text-sm lg:text-2xl' style={styles.timeText}>11.00 WIB</ThemedText>
+                      <ThemedText className='text-sm lg:text-2xl' style={styles.dateText}>24/09/2024</ThemedText>
+                    </View>
+                  </View>
+
+                  {/* Button Add Image (when clicked) */}
+                  {clickedTrack === track.key && (
+                    <View style={styles.activeTrackContent}>
+                      <TouchableOpacity style={styles.addImageButton}>
+                        <ThemedText style={styles.addImageText}>ADD IMAGE</ThemedText>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </TouchableOpacity>
+              </View>
+            ))
+          ) : (
+            <>
+              {/* PT SURYA ANUGRAH MEDIA */}
+              <TouchableOpacity style={styles.infoContainer} onPress={handleToggleSurya}>
+                <View style={styles.infoHeader}>
+                  {/* WIKA Logo */}
+                  <Image source={require('../../assets/images/logo_wika.png')} style={styles.logo} />
+
+                  {/* PT Name and Status */}
+                  <View style={styles.textContainer}>
+                    <ThemedText style={styles.ptName}>PT SURYA ANUGRAH MEDIA</ThemedText>
+                    <View style={styles.statusContainer}>
+                      <ThemedText style={styles.statusText}>Selesai</ThemedText>
+                    </View>
+                  </View>
+
+                  {/* Dropdown Icon */}
+                  <Image
+                    source={isExpandedSurya ? require('../../assets/images/backup.png') : require('../../assets/images/down.png')}
+                    style={styles.dropdownIcon}
+                  />
+                </View>
+
+                {/* Expanded Content for PT SURYA ANUGRAH MEDIA */}
+                {isExpandedSurya && (
+                  <View style={styles.expandedContent}>
+                    <View style={styles.row}>
+                      <View style={styles.column}>
+                        <ThemedText style={styles.label}>Nama Driver:</ThemedText>
+                        <ThemedText style={styles.value}>Lanjar Samadi</ThemedText>
+                      </View>
+                      <View style={styles.column}>
+                        <ThemedText style={styles.label}>Nomor Kendaraan:</ThemedText>
+                        <ThemedText style={styles.value}>AB 3763 EA</ThemedText>
+                      </View>
+                    </View>
+
+                    <View style={styles.row}>
+                      <View style={styles.column}>
+                        <ThemedText style={styles.label}>ULP:</ThemedText>
+                        <ThemedText style={styles.value}>Pasuruan</ThemedText>
+                      </View>
+                      <View style={styles.column}>
+                        <ThemedText style={styles.label}>Due Date:</ThemedText>
+                        <ThemedText style={styles.value}>22-09-2024</ThemedText>
+                      </View>
+                    </View>
+
+                    <View style={styles.row}>
+                      <View style={styles.columnFull}>
+                        <ThemedText style={styles.label}>Nomor KR:</ThemedText>
+                        <ThemedText style={styles.value}>0526.PJ/DAN.01.01/F04000000/2024</ThemedText>
+                      </View>
+                    </View>
+
+                    <View style={styles.row}>
+                      <View style={styles.columnFull}>
+                        <ThemedText style={styles.label}>Nomor PK/WO:</ThemedText>
+                        <ThemedText style={styles.value}>1547/DAN.01.03/F04000000/2024</ThemedText>
+                      </View>
+                    </View>
+
+                    {/* Detail Order Section */}
+                    <ThemedText style={styles.detailsHeader}>Details Order</ThemedText>
+
+                    {/* Order Item */}
+                    <View style={styles.orderItem}>
+                      <Image source={require('../../assets/images/tiang.png')} style={styles.orderImage} />
+                      <View style={styles.orderDetails}>
+                        <ThemedText style={styles.itemName}>Power Pole Large</ThemedText>
+                        <ThemedText style={styles.itemCompany}>PT SURYA ANUGRAH MEDIA</ThemedText>
+                        <View style={styles.itemInfo}>
+                          <ThemedText style={styles.itemType}>Type 682-T32</ThemedText>
+                          <ThemedText style={styles.itemQuantity}>Quantity: 2</ThemedText>
+                        </View>
+                      </View>
+                    </View>
+
+                    {/* Add more items here if needed */}
+                  </View>
+                )}
+              </TouchableOpacity>
+
+              {/* PT SEJAHTERA ABADI */}
+              <TouchableOpacity style={styles.infoContainer} onPress={handleToggleSejahtera}>
+                <View style={styles.infoHeader}>
+                  {/* WIKA Logo */}
+                  <Image source={require('../../assets/images/logo_wika.png')} style={styles.logo} />
+
+                  {/* PT Name and Status */}
+                  <View style={styles.textContainer}>
+                    <ThemedText style={styles.ptName}>PT SEJAHTERA ABADI</ThemedText>
+                    <View style={styles.statusContainerYellow}>
+                      <ThemedText style={styles.statusTextYellow}>Proses</ThemedText>
+                    </View>
+                  </View>
+
+                  {/* Dropdown Icon */}
+                  <Image
+                    source={isExpandedSejahtera ? require('../../assets/images/backup.png') : require('../../assets/images/down.png')}
+                    style={styles.dropdownIcon}
+                  />
+                </View>
+
+                {/* Expanded Content for PT SEJAHTERA ABADI */}
+                {isExpandedSejahtera && (
+                  <View style={styles.expandedContent}>
+                    <View style={styles.row}>
+                      <View style={styles.column}>
+                        <ThemedText style={styles.label}>Nama Driver:</ThemedText>
+                        <ThemedText style={styles.value}>Andi Santoso</ThemedText>
+                      </View>
+                      <View style={styles.column}>
+                        <ThemedText style={styles.label}>Nomor Kendaraan:</ThemedText>
+                        <ThemedText style={styles.value}>AB 1234 CD</ThemedText>
+                      </View>
+                    </View>
+
+                    <View style={styles.row}>
+                      <View style={styles.column}>
+                        <ThemedText style={styles.label}>ULP:</ThemedText>
+                        <ThemedText style={styles.value}>Malang</ThemedText>
+                      </View>
+                      <View style={styles.column}>
+                        <ThemedText style={styles.label}>Due Date:</ThemedText>
+                        <ThemedText style={styles.value}>23-09-2024</ThemedText>
+                      </View>
+                    </View>
+
+                    <View style={styles.row}>
+                      <View style={styles.columnFull}>
+                        <ThemedText style={styles.label}>Nomor KR:</ThemedText>
+                        <ThemedText style={styles.value}>0527.PJ/DAN.01.01/F04000000/2024</ThemedText>
+                      </View>
+                    </View>
+
+                    <View style={styles.row}>
+                      <View style={styles.columnFull}>
+                        <ThemedText style={styles.label}>Nomor PK/WO:</ThemedText>
+                        <ThemedText style={styles.value}>1548/DAN.01.03/F04000000/2024</ThemedText>
+                      </View>
+                    </View>
+
+                    {/* Detail Order Section */}
+                    <ThemedText style={styles.detailsHeader}>Details Order</ThemedText>
+
+                    {/* Order Item */}
+                    <View style={styles.orderItem}>
+                      <Image source={require('../../assets/images/tiang.png')} style={styles.orderImage} />
+                      <View style={styles.orderDetails}>
+                        <ThemedText style={styles.itemName}>Power Pole Medium</ThemedText>
+                        <ThemedText style={styles.itemCompany}>PT SEJAHTERA ABADI</ThemedText>
+                        <View style={styles.itemInfo}>
+                          <ThemedText style={styles.itemType}>Type 682-T31</ThemedText>
+                          <ThemedText style={styles.itemQuantity}>Quantity: 3</ThemedText>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                )}
+              </TouchableOpacity>
+            </>
+          )}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
     flex: 1,
-  },
-
-  statusContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 10,
-  },
-
-  orderCard: {
-    flexDirection: 'row',
+    marginTop: -100,
     backgroundColor: '#fff',
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
   },
-  statusIndicator: {
-    marginVertical: 15,
-    width: 7,
-    borderRadius: 10,
-    backgroundColor: '#00ADEF',
+  content: {
+    alignItems: 'center',
+    paddingBottom: 16,
   },
-  orderDetails: {
-    marginLeft: 15,
-    flex: 1,
+  backgroundImage: {
+    width: width, // Using screen width
+    height: height * 0.4, // Dynamic height based on screen size
+    resizeMode: 'cover',
   },
-  
-  orderHeader: {
+  overlayHeader: {
+    position: 'absolute',
+    top: 40, // Position header over the image
+    left: 20,
+    right: 20,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 10, // Make sure the header stays on top of the image
+  },
+  backButton: {
+    position: 'absolute',
+    left: 10, // Position the back icon to the left
+    backgroundColor: '#fff',
+    borderRadius: 15,
+    padding: 10,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+  },
+  backIcon: {
+    width: 24,
+    height: 24,
+  },
+  headerText: {
+    fontWeight: '900',
+    color: '#414141',
+    fontSize: width * 0.06, // Adjust the size based on screen width
+  },
+  orderContainer: {
+    width: width, // Full width of the screen
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    marginTop: -30,
+    padding: 16,
+    elevation: 3,
+  },
+  tabContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
     marginBottom: 20,
+    paddingHorizontal: 20,
   },
-
-  timeline: {
-    flexDirection: 'column',
-    marginVertical: 10,
+  tabButtonActive: {
+    backgroundColor: '#23ACE3',
+    paddingVertical: 10,
+    paddingHorizontal: 25,
+    borderRadius: 20,
   },
-  timelineStep: {
+  tabButtonInactive: {
+    paddingVertical: 10,
+    paddingHorizontal: 25,
+    borderRadius: 20,
+  },
+  tabTextActive: {
+    color: '#fff', // White text for active tab
+    fontWeight: 'bold',
+  },
+  tabTextInactive: {
+    fontSize: width * 0.04, // Adjust tab text size based on screen width
+    color: '#585858', // Grey text for inactive tab
+  },
+  trackWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
   },
-  icon: {
-    width: 30,
-    height: 30,
+  leftContainer: {
+    width: '15%', // Take 15% width for the left side
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  circle: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    borderWidth: 3,
+    borderColor: '#23ACE3',
+    backgroundColor: '#fff',
+  },
+  circleActive: {
+    backgroundColor: '#23ACE3',
+  },
+  verticalLine: {
+    position: 'absolute',
+    top: 25,
+    bottom: -90,
+    width: 2,
+    backgroundColor: '#23ACE3',
+  },
+  trackContent: {
+    flexDirection: 'row', // Ensures content is aligned horizontally
+    justifyContent: 'space-between', // Spaces out the content within the container
+    alignItems: 'center', // Centers items vertically
+  },
+  trackInfo: {
+    flexDirection: 'column', // Align title and subtext vertically
+  },
+  dateTimeContainer: {
+    flexDirection: 'column', // Align time and date vertically
+    alignItems: 'flex-end', // Align to the right side
+  },
+  timeText: {
+    color: '#A0A0A0', // Grey color for time
+  },
+  dateText: {
+    color: '#A0A0A0', // Grey color for date
+  },
+  activeTrackContent: {
+    marginTop: 10, // Add margin to push the button below the text
+    alignItems: 'center', // Align button to the center
+  },
+  trackContainerActive: {
+    flex: 1,
+    borderWidth: 2,
+    borderColor: '#23ACE3',
+    padding: 15,
+    borderRadius: 10,
+  },
+  trackContainerInactive: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    padding: 15,
+    borderRadius: 10,
+  },
+  orderText: {
+    fontWeight: 'bold',
+    color: '#585858',
+  },
+  orderSubText: {
+    color: '#A0A0A0',
+  },
+  addImageButton: {
+    width: '100%', // Make the button span 100% width
+    backgroundColor: '#23ACE3',
+    paddingVertical: 10,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  addImageText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  informationContent: {
+    paddingVertical: 10,
+  },
+  informationText: {
+    fontSize: width * 0.04, // Adjust the size dynamically
+    color: '#585858',
+  },
+  infoContainer: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 10,
+    backgroundColor: '#fff',
+  },
+  infoHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  logo: {
+    width: 50,
+    height: 50,
+    resizeMode: 'contain',
+  },
+  textContainer: {
+    flex: 1,
+    marginLeft: 10,
+  },
+  ptName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#414141',
+  },
+  statusContainer: {
+    backgroundColor: '#28A745', // Green for "Selesai"
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 15,
+    marginTop: 5,
+    alignSelf: 'flex-start',
+  },
+  statusText: {
+    color: '#fff',
+    fontSize: 12,
+  },
+  statusContainerYellow: {
+    backgroundColor: '#FFC107', // Yellow for "Proses"
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 15,
+    marginTop: 5,
+    alignSelf: 'flex-start',
+  },
+  statusTextYellow: {
+    color: '#fff',
+    fontSize: 12,
+  },
+  dropdownIcon: {
+    width: 24,
+    height: 24,
+    resizeMode: 'contain',
+  },
+  expandedContent: {
+    marginTop: 10,
+    paddingTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: '#ddd',
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  column: {
+    flex: 1,
+  },
+  columnFull: {
+    flex: 1,
+    flexDirection: 'column',
+    marginBottom: 10,
+  },
+  label: {
+    fontWeight: 'bold',
+    color: '#414141',
+  },
+  value: {
+    marginTop: 5,
+    color: '#585858',
+  },
+  detailsHeader: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#414141',
+    marginBottom: 10,
+  },
+  orderItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    marginBottom: 10,
+  },
+  orderImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 5,
     marginRight: 10,
   },
-  paymentButton: {
-    backgroundColor: '#00ADEF',
-    paddingVertical: 10,
-    borderRadius: 20,
-    marginTop: 20,
+  orderDetails: {
+    flex: 1,
+  },
+  itemName: {
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  itemCompany: {
+    fontSize: 12,
+    color: '#585858',
+  },
+  itemInfo: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 5,
+  },
+  itemType: {
+    fontSize: 12,
+    color: '#585858',
+  },
+  itemQuantity: {
+    fontSize: 12,
+    color: '#585858',
   },
 });

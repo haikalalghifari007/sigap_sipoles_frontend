@@ -122,10 +122,10 @@ const HomeScreen = () => {
 
         <View className='flex-row justify-between mx-5'>
 
-        <Link href="/employee/newjob" asChild>
-          <TouchableOpacity style={{ width: '47%' }}>
+        <Link href={{ pathname: "/vendor/order-list", params: { tab: 'pesananbaru' } }} asChild>
+          <TouchableOpacity style={{ width: '30%' }}>
             <View className='p-5 rounded-3xl' style={[{ backgroundColor: detailBackgroundColor }]}>
-              <View className='mt-3 rounded-full p-3 bg-[#23ACE340]'
+              <View className={`mt-3 rounded-full p-3 bg-[${Colors.colorful.bluetr}]`}
                 style={{
                   width: 50, // or any size you prefer
                   height: 50, // same as width to keep it circular
@@ -138,15 +138,15 @@ const HomeScreen = () => {
                 }}>
                 <Image source={require("../../../assets/images/fejob.png")} className="w-8 h-8 md:w-16 md:h-16" />
               </View>
-              <ThemedText className="text-center text-sm md:text-xl font-omedium mt-2">New Job</ThemedText>
+              <ThemedText className="text-center text-sm md:text-xl font-omedium mt-2">Manage</ThemedText>
             </View>
           </TouchableOpacity>
           </Link>
 
-          <Link href="/employee/order-list" asChild>
-            <TouchableOpacity style={{ width: '47%' }}>
+          <Link href="/vendor/order-list" asChild>
+            <TouchableOpacity style={{ width: '30%' }}>
               <View className='p-5 rounded-3xl' style={[{ backgroundColor: detailBackgroundColor }]}>
-                <View className='mt-3 rounded-full p-3 bg-[#FC366B40]'
+              <View className={`mt-3 rounded-full p-3 bg-[${Colors.colorful.redtr}]`}
                   style={{
                     width: 50,
                     height: 50,
@@ -160,6 +160,27 @@ const HomeScreen = () => {
                   <Image source={require("../../../assets/images/feorder.png")} className="w-8 h-8 md:w-16 md:h-16" />
                 </View>
                 <ThemedText className="text-center text-sm md:text-xl font-omedium mt-2">Order List</ThemedText>
+              </View>
+            </TouchableOpacity>
+          </Link>
+
+          <Link href={{ pathname: "/vendor/swap", params: { tab: 'completed' } }} asChild>
+            <TouchableOpacity style={{ width: '30%' }}>
+              <View className='p-5 rounded-3xl' style={[{ backgroundColor: detailBackgroundColor }]}>
+              <View className='mt-3 rounded-full p-3 bg-[#FAC44140]'
+                  style={{
+                    width: 50,
+                    height: 50,
+                    borderRadius: 25,
+                    borderColor: Colors.colorful.yellow,
+                    borderWidth: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignSelf: 'center'
+                  }}>
+                  <Image source={require("../../../assets/images/feswap.png")} className="w-8 h-8 md:w-16 md:h-16" />
+                </View>
+                <ThemedText className="text-center text-sm md:text-xl font-omedium mt-2">Swap</ThemedText>
               </View>
             </TouchableOpacity>
           </Link>

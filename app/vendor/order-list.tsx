@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { View, TextInput, FlatList, Text, TouchableOpacity, StyleSheet, useColorScheme, Dimensions } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import { Link } from 'expo-router';
+import { Link, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/constants/Colors';
@@ -30,7 +30,9 @@ const TabRoutes = {
 const OrderListScreen = () => {
   const { theme } = useContext(ThemeContext); // Get theme from context
   const backgroundColor = theme === 'dark' ? Colors.dark.background : Colors.light.background;
-  const [index, setIndex] = useState(0);
+  const params = useLocalSearchParams(); // Get params from the route
+  const initialTab = params.tab === 'pesananbaru' ? 1 : 0;
+  const [index, setIndex] = useState(initialTab);
   const [routes] = useState([
     { key: 'All', title: 'All' },
     { key: 'Unprocessed', title: 'Unprocessed' },
@@ -107,26 +109,37 @@ const OrderList = ({ filter }) => {
       <FlatList
         data={filteredOrders}
         keyExtractor={item => item.orderId}
-        renderItem={({ item }) => (
-          <Link href={{ pathname: "/employee/detail-order", params: { orderId: item.orderId, title: item.title, status: item.status } }} asChild>
-            <TouchableOpacity>
-              <View style={[styles.orderCard, { backgroundColor: cardBackgroundColor }]}>
-                {/* Status indicator */}
-                <View style={[styles.statusIndicator, { backgroundColor: item.statusColor }]} />
-                <View style={styles.orderDetails}>
-                  <ThemedText className="font-omedium text-xl md:text-2xl mt-3">{item.title}</ThemedText>
-                  <ThemedText className="font-oregular text-xs md:text-base" style={styles.description}>{item.description}</ThemedText>
-                  <View style={styles.statusContainer}>
-                    <ThemedText className="font-oregular text-xs md:text-base" style={[styles.statusText, { color: item.statusColor }, { backgroundColor: outlineColor }]}>
-                      {item.status}
-                    </ThemedText>
-                    <ThemedText className="font-olight text-xs md:text-base" style={styles.orderId}>#ID {item.orderId}</ThemedText>
+        renderItem={({ item }) => {
+          // Determine the destination based on the status
+          const destination = item.status === 'Unprocessed' ? '/vendor/detail-fvendor' : '/vendor/detail-order';
+
+          return (
+            <Link
+              href={{
+                pathname: destination,
+                params: { orderId: item.orderId, title: item.title, status: item.status }
+              }}
+              asChild
+            >
+              <TouchableOpacity>
+                <View style={[styles.orderCard, { backgroundColor: cardBackgroundColor }]}>
+                  {/* Status indicator */}
+                  <View style={[styles.statusIndicator, { backgroundColor: item.statusColor }]} />
+                  <View style={styles.orderDetails}>
+                    <ThemedText className="font-omedium text-xl md:text-2xl mt-3">{item.title}</ThemedText>
+                    <ThemedText className="font-oregular text-xs md:text-base" style={styles.description}>{item.description}</ThemedText>
+                    <View style={styles.statusContainer}>
+                      <ThemedText className="font-oregular text-xs md:text-base" style={[styles.statusText, { color: item.statusColor }, { backgroundColor: outlineColor }]}>
+                        {item.status}
+                      </ThemedText>
+                      <ThemedText className="font-olight text-xs md:text-base" style={styles.orderId}>#ID {item.orderId}</ThemedText>
+                    </View>
                   </View>
                 </View>
-              </View>
-            </TouchableOpacity>
-          </Link>
-        )}
+              </TouchableOpacity>
+            </Link>
+          );
+        }}
       />
 
     </SafeAreaView>

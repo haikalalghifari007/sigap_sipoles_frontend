@@ -27,8 +27,22 @@ export default function HomessScreen() {
       </Link>
       <Link href="/employee" asChild>
         <TouchableOpacity>
-          <View className="mb-4 p-2 rounded-xl items-center bg-originblue">
+          <View className="p-2 rounded-xl items-center bg-originblue">
             <ThemedText className="mb-1 text-white font-oregular text-lg">Employee</ThemedText>
+          </View>
+        </TouchableOpacity>
+      </Link>
+      <Link href="/user" asChild>
+        <TouchableOpacity>
+          <View className=" p-2 rounded-xl items-center bg-originblue">
+            <ThemedText className="mb-1 text-white font-oregular text-lg">User</ThemedText>
+          </View>
+        </TouchableOpacity>
+      </Link>
+      <Link href="/vendor" asChild>
+        <TouchableOpacity>
+          <View className="mb-4 p-2 rounded-xl items-center bg-originblue">
+            <ThemedText className="mb-1 text-white font-oregular text-lg">Vendor</ThemedText>
           </View>
         </TouchableOpacity>
       </Link>

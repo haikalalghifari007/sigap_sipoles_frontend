@@ -54,15 +54,12 @@ export default function RootLayout() {
     >
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="order-list" options={{ title: 'Order List' }} />
-      <Stack.Screen name="vendor-list" options={{ title: 'Vendor List' }} />
-      <Stack.Screen name="detail-order" options={{ title: 'Detail Order',headerTintColor: '#000000', headerStyle: { backgroundColor: 'transparent' } }} />
-      <Stack.Screen name="product-list" options={{ title: 'Product List' }} />
-      <Stack.Screen name="account-list" options={{ title: 'Account List' }} />
-      <Stack.Screen name="newjob" options={{ title: 'Berita Baru' }} />
-      <Stack.Screen name="address-detail" options={{ title: 'Detail Alamat' }} />
+      <Stack.Screen name="detail-fvendor" options={{ title: 'Details', headerTintColor: '#000000', headerStyle: { backgroundColor: 'transparent' }}} />
+      <Stack.Screen name="detail-order" options={{ title: 'Detail Order', headerTintColor: '#000000', headerStyle: { backgroundColor: 'transparent' } }} />
+      <Stack.Screen name="pilih-driver" options={{ title: 'Pilih Driver', headerTintColor: '#000000', headerStyle: { backgroundColor: 'transparent' } }} />
+      <Stack.Screen name="pilih-installer" options={{ title: 'Pilih Installer', headerTintColor: '#000000', headerStyle: { backgroundColor: 'transparent' } }} />
       <Stack.Screen name="profile-settings" options={{ title: 'Profile Settings' }} />
-      <Stack.Screen name="vendor-add" options={{ animation: 'slide_from_bottom', title: 'Add Vendor' }} />
-      <Stack.Screen name="product-add" options={{ animation: 'slide_from_bottom', title: 'Add Product' }} />
+      <Stack.Screen name="swap" options={{ title: 'Swap' }} />
     </Stack>
   );
 }

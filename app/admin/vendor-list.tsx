@@ -29,6 +29,9 @@ const VendorListScreen = () => {
       data={vendorData}
       keyExtractor={item => item.id}
       renderItem={({ item }) => (
+        <Link href='/admin/account-list' asChild>
+
+        <TouchableOpacity>
         <View style={[styles.orderCard, { backgroundColor: backgroundColor }]}>
           {/* Status indicator */}
           <View style={[styles.statusIndicator, { backgroundColor: cardBackgroundColor }]} >
@@ -56,6 +59,8 @@ const VendorListScreen = () => {
             </View>
           </View>
         </View>
+        </TouchableOpacity>
+        </Link>
       )}
     />
     <Link href={{ pathname: '/admin/add-edit', params: { type: 'vendor', mode: 'add' } }} asChild>

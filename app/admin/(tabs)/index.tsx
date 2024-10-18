@@ -144,7 +144,7 @@ const HomeScreen = () => {
 
           {/* <LineGraph 
           data={[12, 5, 9, 30, 20, 51, 20, 1, 4, 2, 70]}
-          color={Colors.light.originblue}
+          color={'#000000'}
           label="Views"
           stat="120k"/> */}
 

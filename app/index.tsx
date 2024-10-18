@@ -3,6 +3,7 @@ import { StyleSheet, View, Image } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import HomessScreen from './homepage'; // Import HomessScreen from homepage.tsx
 import { ThemedText } from '@/components/ThemedText';
+import SignUp from './signup';
 
 export default function Index() {
   const [showHomeScreen, setShowHomeScreen] = useState(false); // To control when to show HomessScreen
@@ -47,7 +48,7 @@ export default function Index() {
   }
 
   // After animation and transition delay, show the HomessScreen
-  return <HomessScreen />;
+  return <SignUp />;
 }
 
 ;

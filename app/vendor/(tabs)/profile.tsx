@@ -83,7 +83,7 @@ const ProfilesScreen = () => {
               GENERAL
             </ThemedText>
 
-            <Link href="/employee/profile-settings" asChild>
+            <Link href="/vendor/profile-settings" asChild>
             <TouchableOpacity>
             <View className="flex-row  items-center shadow-sm shadow-grey  px-2 md:px-6 py-1.5 md:py-4" style={[{ backgroundColor: cardBackgroundColor, borderRadius: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4, }]}>
               <View className='bg-[#70CAED40] p-2 rounded-lg'>

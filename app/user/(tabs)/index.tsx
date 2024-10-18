@@ -103,10 +103,10 @@ const HomeScreen = () => {
         <View className="px-5 md:px-12">
 
           <View className='flex-row -mt-6'>
-            <ThemedText className="text-3xl font-obold">Let's </ThemedText>
-            <ThemedText className="text-3xl font-obold text-originblue">manage</ThemedText>
+            <ThemedText className="text-3xl font-obold">You have  </ThemedText>
+            <ThemedText className="text-3xl font-obold text-originblue">12 task</ThemedText>
           </View>
-          <ThemedText className="text-3xl font-obold">tasks efficiently!</ThemedText>
+          <ThemedText className="text-3xl font-obold">this month</ThemedText>
         </View>
 
         {/* end of overview */}
@@ -122,44 +122,44 @@ const HomeScreen = () => {
 
         <View className='flex-row justify-between mx-5'>
 
-        <Link href="/employee/newjob" asChild>
+        <Link href="/user/order-list" asChild>
           <TouchableOpacity style={{ width: '47%' }}>
             <View className='p-5 rounded-3xl' style={[{ backgroundColor: detailBackgroundColor }]}>
-              <View className='mt-3 rounded-full p-3 bg-[#23ACE340]'
+              <View className={`mt-3 rounded-full p-3 bg-[${Colors.colorful.redtr}]`}
                 style={{
                   width: 50, // or any size you prefer
                   height: 50, // same as width to keep it circular
                   borderRadius: 25, // half of width/height
-                  borderColor: Colors.colorful.blue,
+                  borderColor: Colors.colorful.red,
                   borderWidth: 1,
                   justifyContent: 'center', // centers child element vertically
                   alignItems: 'center', // centers child element horizontally
                   alignSelf: 'center' // centers the circle within the parent container
                 }}>
-                <Image source={require("../../../assets/images/fejob.png")} className="w-8 h-8 md:w-16 md:h-16" />
+                <Image source={require("../../../assets/images/feorder.png")} className="w-8 h-8 md:w-16 md:h-16" />
               </View>
-              <ThemedText className="text-center text-sm md:text-xl font-omedium mt-2">New Job</ThemedText>
+              <ThemedText className="text-center text-sm md:text-xl font-omedium mt-2">My Job</ThemedText>
             </View>
           </TouchableOpacity>
           </Link>
 
-          <Link href="/employee/order-list" asChild>
+          <Link href={{ pathname: "/user/order-list", params: { tab: 'completed' } }} asChild>
             <TouchableOpacity style={{ width: '47%' }}>
               <View className='p-5 rounded-3xl' style={[{ backgroundColor: detailBackgroundColor }]}>
-                <View className='mt-3 rounded-full p-3 bg-[#FC366B40]'
+              <View className='mt-3 rounded-full p-3 bg-[#FAC44140]'
                   style={{
                     width: 50,
                     height: 50,
                     borderRadius: 25,
-                    borderColor: Colors.colorful.red,
+                    borderColor: Colors.colorful.yellow,
                     borderWidth: 1,
                     justifyContent: 'center',
                     alignItems: 'center',
                     alignSelf: 'center'
                   }}>
-                  <Image source={require("../../../assets/images/feorder.png")} className="w-8 h-8 md:w-16 md:h-16" />
+                  <Image source={require("../../../assets/images/history.png")} className="w-8 h-8 md:w-16 md:h-16" />
                 </View>
-                <ThemedText className="text-center text-sm md:text-xl font-omedium mt-2">Order List</ThemedText>
+                <ThemedText className="text-center text-sm md:text-xl font-omedium mt-2">History</ThemedText>
               </View>
             </TouchableOpacity>
           </Link>
@@ -168,7 +168,7 @@ const HomeScreen = () => {
 
 
         <ThemedText className="text-2xl md:text-3xl py-3 font-osemibold px-5 md:px-12">
-          Recently
+          Today's Tasks
         </ThemedText>
 
 
