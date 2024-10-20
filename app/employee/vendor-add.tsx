@@ -6,7 +6,7 @@ import { StyleSheet, Image, Platform, TextInput,TouchableOpacity } from 'react-n
 import { FlatList,  GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useColorScheme } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { images } from '@constants/images';
+import { images } from '@/constants/images';
 import { styled } from 'nativewind';
 import React, { useContext, useState } from 'react';
 import { ThemeContext } from '@/components/ThemeContext';

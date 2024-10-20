@@ -6,7 +6,7 @@ import { StyleSheet, Image, Platform } from 'react-native';
 import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useColorScheme } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { images } from '@constants/images';
+import { images } from '@/constants/images';
 import { Link, LinkProps } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 import { ThemeContext } from '@/components/ThemeContext';

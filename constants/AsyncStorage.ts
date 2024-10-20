@@ -1,0 +1,8 @@
+export const AS_KEY = {
+  ACCESS_TOKEN: "ACCESS_TOKEN",
+  REFRESH_TOKEN: "REFRESH_TOKEN",
+  ROLE: "ROLE",
+  USER: "USER",
+  VENDOR: "VENDOR",
+  ADMIN: "ADMIN",
+};
