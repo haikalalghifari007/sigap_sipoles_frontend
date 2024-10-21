@@ -1,54 +1,71 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
-import HomessScreen from './homepage'; // Import HomessScreen from homepage.tsx
-import { ThemedText } from '@/components/ThemedText';
-import SignUp from './signup';
+import React, { useEffect, useState } from "react";
+import { View, Image, ActivityIndicator } from "react-native";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+} from "react-native-reanimated";
+import { ThemedText } from "@/components/ThemedText";
+import { refresh } from "@/services/auth";
 
 export default function Index() {
-  const [showHomeScreen, setShowHomeScreen] = useState(false); // To control when to show HomessScreen
-  const opacity = useSharedValue(0); // Shared value for animation
+  const [showHomeScreen, setShowHomeScreen] = useState(false);
+  const opacity = useSharedValue(0);
+  const [loading, setLoading] = useState(true);
+
+  const handleRefresh = async () => {
+    setLoading(true);
+    await refresh();
+    setLoading(false);
+  };
 
   useEffect(() => {
-    // Trigger the animation
     opacity.value = withTiming(1, { duration: 2000 });
-
-    // Delay the transition after the animation completes
     const timer = setTimeout(() => {
-      setShowHomeScreen(true); // Safely update state after a delay
-    }, 3000); // The delay accounts for the animation duration + additional delay (500ms)
+      setShowHomeScreen(true);
+    }, 3000);
 
-    return () => clearTimeout(timer); // Clean up timer
+    return () => clearTimeout(timer);
   }, []);
 
-  // Animated styles for the image fade-in effect
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,
   }));
 
+  useEffect(() => {
+    if (showHomeScreen && loading) {
+      handleRefresh();
+    }
+  }, [showHomeScreen, loading]);
+
   if (!showHomeScreen) {
-    // Show the animated image first, keeping the background static
     return (
-      <View className='flex-1 justify-center items-center bg-originblue'>
+      <View className="flex-1 justify-center items-center bg-originblue">
         <Animated.Image
-          source={require('../assets/images/splashwika.png')} // Replace with your image path
-          style={[ animatedStyle]} className='w-60 h-60' // Apply the animation to the image
+          source={require("../assets/images/splashwika.png")}
+          style={[animatedStyle]}
+          className="w-60 h-60"
           resizeMode="contain"
         />
-        <View className='flex-row mx-5 space-x-3 absolute bottom-10'>
+        <View className="flex-row mx-5 space-x-3 absolute bottom-10">
           <Image
-            source={require('../assets/images/wikalogowhite.png')} // Replace with your image path
-            className='w-12 h-12'// Apply the animation to the image
+            source={require("../assets/images/wikalogowhite.png")}
+            className="w-12 h-12"
             resizeMode="contain"
           />
-          <ThemedText className='text-white font-oregular text-xs flex-1'>PT Wijaya Karya Tbk (WIKA) berizin dan diawasi oleh Kementerian PUPR serta mengikuti regulasi yang ditetapkan oleh BUMN untuk memastikan standar kualitas dan kepatuhan.</ThemedText>
+          <ThemedText className="text-white font-oregular text-xs flex-1">
+            PT Wijaya Karya Tbk (WIKA) berizin dan diawasi oleh Kementerian PUPR
+            serta mengikuti regulasi yang ditetapkan oleh BUMN untuk memastikan
+            standar kualitas dan kepatuhan.
+          </ThemedText>
         </View>
       </View>
     );
+  } else if (loading) {
+    return (
+      <View className="flex-1 justify-center items-center bg-originblue">
+        <ActivityIndicator color={"white"} size={"large"} />
+      </View>
+    );
   }
-
-  // After animation and transition delay, show the HomessScreen
-  return <SignUp />;
 }
-
-;

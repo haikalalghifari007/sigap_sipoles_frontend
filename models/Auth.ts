@@ -1,6 +1,6 @@
 import { APIRes } from "./ResponseHelper";
 
-export type Role = "ADMIN" | "EMPLOYEE" | "DRIVER" | "INSTALLER";
+export type Role = "ADMIN" | "EMPLOYEE" | "DRIVER" | "INSTALLER" | "VENDOR";
 
 export interface LoginRes extends APIRes {
   data: {

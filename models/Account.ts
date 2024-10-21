@@ -8,7 +8,7 @@ export interface Account<T> {
   picture: string | null;
   createdAt: string;
   updatedAt: string;
-  type: T;
+  type: T | string;
 }
 
 export interface ManageAccountRes extends APIRes {

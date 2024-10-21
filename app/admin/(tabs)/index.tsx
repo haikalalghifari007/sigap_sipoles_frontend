@@ -1,25 +1,30 @@
-import { View, Pressable, ScrollView, Dimensions, TouchableOpacity, } from 'react-native';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { StyleSheet, Image, Platform } from 'react-native';
-import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
-import { useColorScheme } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { images } from '@/constants/images';
-import { Link, LinkProps } from 'expo-router';
-import { Colors } from '@/constants/Colors';
-import { ThemeContext } from '@/components/ThemeContext';
-import { useContext } from 'react';
-import {LineGraph} from "@/components/LineGraph";
+import {
+  View,
+  Pressable,
+  ScrollView,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { StyleSheet, Image, Platform } from "react-native";
+import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
+import { useColorScheme } from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { images } from "@/constants/images";
+import { Href, Link, LinkProps, useFocusEffect } from "expo-router";
+import { Colors } from "@/constants/Colors";
+import { ThemeContext } from "@/components/ThemeContext";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { LineGraph } from "@/components/LineGraph";
+import { Admin, initAdmin } from "@/models/Admin";
+import greet from "@/helper/greet";
+import { profile } from "@/services/admin/info";
 
-const screenWidth = Dimensions.get('window').width;
+const screenWidth = Dimensions.get("window").width;
 
-// Define threshold for tablet size (768px as an example)
 const isTablet = screenWidth >= 768;
-
-
-
 
 const dataFeatures = [
   {
@@ -49,25 +54,35 @@ const dataFeatures = [
 ];
 
 const HomeScreen = () => {
-  const { theme } = useContext(ThemeContext); // Get theme from context
+  const { theme } = useContext(ThemeContext);
+  const [data, setData] = useState<Admin>(initAdmin);
 
-  const backgroundColor = theme === 'dark' ? Colors.dark.background : Colors.light.background;
-  const cardBackgroundColor = theme === 'dark' ? Colors.dark.card : Colors.light.card; // Card background color for dark mode
-  const dropBackgroundColor = theme === 'dark' ? Colors.dark.outline : Colors.light.outline; //
-  const seperateColor = theme === 'dark' ? '#FFFFFF' : '#000000'; //
+  useEffect(() => {
+    profile().then((res) => {      
+      if (res) {
+        setData(res);
+      }
+    });
+  }, []);
+
+  const backgroundColor =
+    theme === "dark" ? Colors.dark.background : Colors.light.background;
+  const cardBackgroundColor =
+    theme === "dark" ? Colors.dark.card : Colors.light.card; 
+  const dropBackgroundColor =
+    theme === "dark" ? Colors.dark.outline : Colors.light.outline; 
+  const seperateColor = theme === "dark" ? "#FFFFFF" : "#000000"; 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor }}>
-      <ScrollView
-        style={{ minHeight: Dimensions.get('window').height }}
-      >
+      <ScrollView style={{ minHeight: Dimensions.get("window").height }}>
         <View className="my-3  space-y-2">
-          <View className='   px-5 md:px-12 justify-between items-start flex-row mb-6' >
+          <View className="   px-5 md:px-12 justify-between items-start flex-row mb-6">
             <View>
               <ThemedText className="text-xl md:text-2xl font-olight">
-                Welcome,
+                {greet},
               </ThemedText>
               <ThemedText className="text-2xl md:text-3xl font-osemibold">
-                Lanjar Samadi Super
+                {data.name}
               </ThemedText>
             </View>
             <View className="mt-1.5">
@@ -78,32 +93,71 @@ const HomeScreen = () => {
             </View>
           </View>
 
-          <View className="mx-5 md:mx-12 my-2 px-8 md:px-14 py-3 space-y-3" style={[{ backgroundColor: cardBackgroundColor, borderRadius: 30, shadowColor: '#000', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.1, shadowRadius: 4, elevation: 4, }]}>
-            <View className='space-x-2 flex-row items-center'>
+          <View
+            className="mx-5 md:mx-12 my-2 px-8 md:px-14 py-3 space-y-3"
+            style={[
+              {
+                backgroundColor: cardBackgroundColor,
+                borderRadius: 30,
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: 0 },
+                shadowOpacity: 0.1,
+                shadowRadius: 4,
+                elevation: 4,
+              },
+            ]}
+          >
+            <View className="space-x-2 flex-row items-center">
               <Image
                 source={require("../../../assets/images/overview.png")}
                 className="w-10 h-10 md:w-16 md:h-16"
-                resizeMode='contain'
+                resizeMode="contain"
               />
               <ThemedText className="text-xl md:text-3xl font-osemibold">
                 Overview
               </ThemedText>
             </View>
 
-            <View className='space-x-2 flex-row'>
-              <View className='  p-1 ' style={[{ backgroundColor: dropBackgroundColor, borderRadius: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4, }]}>
+            <View className="space-x-2 flex-row">
+              <View
+                className="  p-1 "
+                style={[
+                  {
+                    backgroundColor: dropBackgroundColor,
+                    borderRadius: 10,
+                    shadowColor: "#000",
+                    shadowOffset: { width: 0, height: 0 },
+                    shadowOpacity: 0.07,
+                    shadowRadius: 4,
+                    elevation: 4,
+                  },
+                ]}
+              >
                 <ThemedText className="px-3 text-xs md:text-lg font-oregular text-originblue">
                   Monthly
                 </ThemedText>
               </View>
-              <View className='  p-1 ' style={[{ backgroundColor: dropBackgroundColor, borderRadius: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4, }]}>
+              <View
+                className="  p-1 "
+                style={[
+                  {
+                    backgroundColor: dropBackgroundColor,
+                    borderRadius: 10,
+                    shadowColor: "#000",
+                    shadowOffset: { width: 0, height: 0 },
+                    shadowOpacity: 0.07,
+                    shadowRadius: 4,
+                    elevation: 4,
+                  },
+                ]}
+              >
                 <ThemedText className="px-3 text-xs md:text-lg font-oregular text-originblue">
                   Download Report
                 </ThemedText>
               </View>
             </View>
 
-            <View className='flex-row justify-between'>
+            <View className="flex-row justify-between">
               <View>
                 <ThemedText className="text-xs md:text-lg font-oregular">
                   Total Order
@@ -113,7 +167,10 @@ const HomeScreen = () => {
                 </ThemedText>
               </View>
 
-              <View className='rounded-full' style={[{ backgroundColor: seperateColor, width: 1 }]} />
+              <View
+                className="rounded-full"
+                style={[{ backgroundColor: seperateColor, width: 1 }]}
+              />
 
               <View>
                 <ThemedText className="text-xs md:text-lg font-oregular">
@@ -124,7 +181,10 @@ const HomeScreen = () => {
                 </ThemedText>
               </View>
 
-              <View className='rounded-full' style={[{ backgroundColor: seperateColor, width: 1 }]} />
+              <View
+                className="rounded-full"
+                style={[{ backgroundColor: seperateColor, width: 1 }]}
+              />
 
               <View>
                 <ThemedText className="text-xs md:text-lg font-oregular">
@@ -134,27 +194,30 @@ const HomeScreen = () => {
                   91
                 </ThemedText>
               </View>
-
             </View>
-
-
           </View>
-
-          {/* end of overview */}
-
-          {/* <LineGraph 
-          data={[12, 5, 9, 30, 20, 51, 20, 1, 4, 2, 70]}
-          color={'#000000'}
-          label="Views"
-          stat="120k"/> */}
 
           <ThemedText className="text-2xl md:text-3xl font-osemibold px-5 md:px-12">
             Income
           </ThemedText>
 
-          <View className='mx-5 md:mx-12 flex-row justify-between'>
-            <View className=" my-2 py-4 space-y-2 items-center" style={[{ width: '48%', backgroundColor: cardBackgroundColor, borderRadius: 15, shadowColor: '#000', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4, }]}>
-              <View className='flex-row px-2'>
+          <View className="mx-5 md:mx-12 flex-row justify-between">
+            <View
+              className=" my-2 py-4 space-y-2 items-center"
+              style={[
+                {
+                  width: "48%",
+                  backgroundColor: cardBackgroundColor,
+                  borderRadius: 15,
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 0 },
+                  shadowOpacity: 0.07,
+                  shadowRadius: 4,
+                  elevation: 4,
+                },
+              ]}
+            >
+              <View className="flex-row px-2">
                 <Image
                   source={require("../../../assets/images/restimate.png")}
                   className="w-5 h-5 md:w-8 md:h-8"
@@ -169,9 +232,22 @@ const HomeScreen = () => {
             </View>
 
             <Link href="/admin/documentrecap" asChild>
-              <TouchableOpacity style={{ width: '48%' }}>
-                <View className="px-1 my-2 py-4 space-y-2 items-center" style={[{ backgroundColor: cardBackgroundColor, borderRadius: 15, shadowColor: '#000', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.07, shadowRadius: 4, elevation: 4, }]}>
-                  <View className='flex-row px-2'>
+              <TouchableOpacity style={{ width: "48%" }}>
+                <View
+                  className="px-1 my-2 py-4 space-y-2 items-center"
+                  style={[
+                    {
+                      backgroundColor: cardBackgroundColor,
+                      borderRadius: 15,
+                      shadowColor: "#000",
+                      shadowOffset: { width: 0, height: 0 },
+                      shadowOpacity: 0.07,
+                      shadowRadius: 4,
+                      elevation: 4,
+                    },
+                  ]}
+                >
+                  <View className="flex-row px-2">
                     <Image
                       source={require("../../../assets/images/document.png")}
                       className="w-5 h-5 md:w-8 md:h-8"
@@ -183,22 +259,28 @@ const HomeScreen = () => {
                   <ThemedText className="px-1 text-xs md:text-base font-oregular text-center text-gray-400 ">
                     Telusuri semua dokumen KR
                   </ThemedText>
-                  <View className='rounded-full mb-2 bg-gray-400' style={[{ flex: 1, height: 1, width: '90%' }]} />
-                  <View className='flex-row item-center align-middle right-1 absolute bottom-1 '>
+                  <View
+                    className="rounded-full mb-2 bg-gray-400"
+                    style={[{ flex: 1, height: 1, width: "90%" }]}
+                  />
+                  <View className="flex-row item-center align-middle right-1 absolute bottom-1 ">
                     <ThemedText className=" text-xs md:text-base  font-oregular ">
                       Lihat Detail
                     </ThemedText>
-                    <Ionicons name="chevron-forward-outline" size={14} color= {seperateColor} />
+                    <Ionicons
+                      name="chevron-forward-outline"
+                      size={14}
+                      color={seperateColor}
+                    />
                   </View>
                 </View>
               </TouchableOpacity>
             </Link>
-
           </View>
           {/* end of income*/}
 
-          <View className=" py-3 md:py-8 space-y-2 rounded-3xl shadow mx-5 md:mx-12 bg-redalert" >
-            <View className='flex-row px-7 md:px-20 items-center' >
+          <View className=" py-3 md:py-8 space-y-2 rounded-3xl shadow mx-5 md:mx-12 bg-redalert">
+            <View className="flex-row px-7 md:px-20 items-center">
               <Image
                 source={require("../../../assets/images/issues.png")}
                 className="w-10 h-10 md:w-16 md:h-16"
@@ -212,42 +294,39 @@ const HomeScreen = () => {
             </ThemedText>
           </View>
 
-
-
-
-
           <ThemedText className="text-2xl md:text-3xl font-osemibold px-5 md:px-12">
             Main Features
           </ThemedText>
 
-
           <GestureHandlerRootView>
             <FlatList
-
               horizontal={true}
               centerContent={true}
               style={{ paddingVertical: 5 }}
               showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{ gap: isTablet ? 50 : 20, paddingHorizontal: 20 }}
+              contentContainerStyle={{
+                gap: isTablet ? 50 : 20,
+                paddingHorizontal: 20,
+              }}
               data={dataFeatures}
               keyExtractor={(item, idx) => item.text + idx}
               renderItem={({ item }) => (
-                <View style={{ alignItems: 'center' }}>
-                  {/* Add Link component and wrap TouchableOpacity */}
-                  <Link href={item.link} asChild>
-                    <TouchableOpacity className='w-20 h-20 md:w-32 md:h-32'
+                <View style={{ alignItems: "center" }}>
+                  <Link href={item.link as Href} asChild>
+                    <TouchableOpacity
+                      className="w-20 h-20 md:w-32 md:h-32"
                       style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
+                        justifyContent: "center",
+                        alignItems: "center",
 
                         backgroundColor: item.color,
                         borderRadius: 20,
                         padding: 10,
                       }}
                     >
-                      <Image className='w-10 h-10 md:w-20 md:h-20'
+                      <Image
+                        className="w-10 h-10 md:w-20 md:h-20"
                         source={item.image}
-
                         resizeMode="contain"
                       />
                     </TouchableOpacity>
@@ -259,22 +338,11 @@ const HomeScreen = () => {
               )}
             />
           </GestureHandlerRootView>
-
-
-
-
-
         </View>
-        <View className='h-40' />
+        <View className="h-40" />
       </ScrollView>
-
-
     </SafeAreaView>
+  );
+};
 
-  )
-}
-
-export default HomeScreen
-
-
-
+export default HomeScreen;

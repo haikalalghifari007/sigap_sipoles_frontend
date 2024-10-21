@@ -15,50 +15,38 @@ import SearchField from "@/components/SearchField";
 import { ThemeContext } from "@/components/ThemeContext";
 import AwesomeAlert from "react-native-awesome-alerts";
 import ListOfAccount from "@/components/ui/ListOfAccount";
-import { Account, ManageAccountRes } from "@/models/Account";
 import {
-  confirmRequest,
   deleteAccount,
   FormDeleteAcc,
-  FormReqAcc,
-  getAllAcounts,
   initFormDeleteAcc,
-  initFormReqAcc,
 } from "@/services/admin/manage";
 import Toast from "react-native-toast-message";
-import ModalConfirmation from "@/components/ui/ModalConfirmation";
+import { useLocalSearchParams, useNavigation } from "expo-router";
+import { DetailVendorRes } from "@/models/Vendor";
+import { getDetailVendor } from "@/services/admin/vendor";
+import { DetailUser } from "@/models/User";
 
-const AccountListScreen = () => {
+const AccountListVendorScreen = () => {
   const { theme } = useContext(ThemeContext);
   const backgroundColor =
     theme === "dark" ? Colors.dark.background : Colors.light.background;
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: "All", title: "Semua" },
-    { key: "Requests", title: "Permintaan Akun" },
-    { key: "Admin", title: "Admin" },
-    { key: "Employees", title: "Pegawai" },
-    { key: "Vendor", title: "Vendor" },
     { key: "Drivers", title: "Pengemudi" },
     { key: "Installers", title: "Pemasang" },
   ]);
 
-  const [data, setData] = useState<ManageAccountRes>();
+  const [data, setData] = useState<DetailVendorRes>();
+
+  const { id, name } = useLocalSearchParams() as { id: string; name: string };
+
+  useNavigation().setOptions({
+    headerTitle: "Daftar Akun " + name || "Semua Akun",
+  });
 
   const TabRoutes = {
     All: () => <AccountList filter="ALL" data={data} refetch={fetchData} />,
-    Requests: () => (
-      <AccountList filter="REQUESTS" data={data} refetch={fetchData} />
-    ),
-    Admin: () => (
-      <AccountList filter="ADMINS" data={data} refetch={fetchData} />
-    ),
-    Vendor: () => (
-      <AccountList filter="VENDORS" data={data} refetch={fetchData} />
-    ),
-    Employees: () => (
-      <AccountList filter="EMPLOYEES" data={data} refetch={fetchData} />
-    ),
     Drivers: () => (
       <AccountList filter="DRIVERS" data={data} refetch={fetchData} />
     ),
@@ -70,9 +58,13 @@ const AccountListScreen = () => {
   const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
-    const res = await getAllAcounts();
-    setData(res);
-    setLoading(false);
+    try {
+      const res = await getDetailVendor(id);
+      setData(res);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -130,7 +122,7 @@ const AccountList = ({
   refetch,
 }: {
   filter: string;
-  data?: ManageAccountRes;
+  data?: DetailVendorRes;
   refetch?: () => void;
 }) => {
   const { theme } = useContext(ThemeContext);
@@ -140,39 +132,23 @@ const AccountList = ({
     theme === "dark" ? Colors.dark.background : Colors.light.background;
   const textColor = theme === "dark" ? Colors.dark.text : Colors.light.text;
 
-  const [filteredAccounts, setFilteredAccounts] = useState<Account<any>[]>([]);
+  const [filteredData, setFilteredAccounts] = useState<DetailUser[]>([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState<string>("");
 
   useEffect(() => {
-    let filteredData: Account<any>[] = [];
+    let filteredData: DetailUser[] = [];
     if (data) {
       if (filter === "ALL") {
-        filteredData = data.data.alls.filter((account) =>
-          account.name.toLowerCase().includes(search.toLowerCase())
-        );
-      } else if (filter === "REQUESTS") {
-        filteredData = data.data.requests.filter((account) =>
-          account.name.toLowerCase().includes(search.toLowerCase())
-        );
-      } else if (filter === "ADMINS") {
-        filteredData = data.data.admins.filter((account) =>
-          account.name.toLowerCase().includes(search.toLowerCase())
-        );
-      } else if (filter === "EMPLOYEES") {
-        filteredData = data.data.employees.filter((account) =>
+        filteredData = data.data.users.alls.filter((account) =>
           account.name.toLowerCase().includes(search.toLowerCase())
         );
       } else if (filter === "DRIVERS") {
-        filteredData = data.data.drivers.filter((account) =>
+        filteredData = data.data.users.drivers.filter((account) =>
           account.name.toLowerCase().includes(search.toLowerCase())
         );
       } else if (filter === "INSTALLERS") {
-        filteredData = data.data.installers.filter((account) =>
-          account.name.toLowerCase().includes(search.toLowerCase())
-        );
-      } else if (filter === "VENDORS") {
-        filteredData = data.data.vendors.filter((account) =>
+        filteredData = data.data.users.installers.filter((account) =>
           account.name.toLowerCase().includes(search.toLowerCase())
         );
       }
@@ -183,9 +159,6 @@ const AccountList = ({
   const [confirmDel, setConfirmDel] = useState(false);
   const [selectedDel, setSelectedDel] =
     useState<FormDeleteAcc>(initFormDeleteAcc);
-
-  const [confirmReq, setConfirmReq] = useState(false);
-  const [selectedReq, setSelectedReq] = useState<FormReqAcc>(initFormReqAcc);
 
   const handleDelAcc = (params: FormDeleteAcc) => {
     setSelectedDel(params);
@@ -203,25 +176,7 @@ const AccountList = ({
       setConfirmDel(false);
       setLoading(false);
     }
-  };
-
-  const handleReqAccount = (params: FormReqAcc) => {
-    setSelectedReq(params);
-    setConfirmReq(true);
-  };
-
-  const confirmReqAccount = async () => {
-    try {
-      setLoading(true);
-      await confirmRequest(selectedReq);
-      refetch && refetch();
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setConfirmReq(false);
-      setLoading(false);
-    }
-  };
+  };  
 
   return (
     <>
@@ -234,7 +189,7 @@ const AccountList = ({
           value={search}
           onTextChange={(text) => setSearch(text)}
         />
-        {filteredAccounts.length === 0 && (
+        {filteredData.length === 0 && (
           <View className="flex-1 items-center justify-center">
             <ThemedText className="font-oregular text-md md:text-base text-gray-600">
               Tidak ada akun ditemukan
@@ -242,43 +197,72 @@ const AccountList = ({
           </View>
         )}
         <FlatList
-          data={filteredAccounts}
-          keyExtractor={(item) => item.id.toString() + "#" + item.type}
+          data={filteredData}
+          keyExtractor={(item) => item.userId.toString()}
           renderItem={({ item }) => (
             <ListOfAccount
-              item={item}
+              item={{ ...item, type: item.role, id: item.userId }}
               onDelete={(params) => handleDelAcc(params)}
-              onApprove={(item) => {
-                handleReqAccount(item);
-              }}
-              onReject={(item) => {
-                handleReqAccount(item);
-              }}
             />
           )}
         />
 
-        <ModalConfirmation
-          title="Hapus Akun"
-          message="Apakah Anda yakin ingin menghapus akun ini?"
-          onConfirm={() => {
-            loading ? null : confirmDelAcc();
+        <AwesomeAlert
+          show={confirmDel}
+          showProgress={false}
+          contentContainerStyle={[
+            { backgroundColor: backgroundColor, borderRadius: 20 },
+          ]}
+          customView={
+            <View className="items-center">
+              <View
+                className="p-3 rounded-full"
+                style={{ backgroundColor: Colors.colorful.redtr }}
+              >
+                <Image
+                  source={require("@/assets/images/cautions.png")}
+                  className="w-6 h-6"
+                  resizeMode="contain"
+                />
+              </View>
+              <ThemedText className="font-omedium text-lg md:text-xl my-2">
+                Hapus Akun
+              </ThemedText>
+              <ThemedText className="font-oregular text-sm md:text-base text-gray-600">
+                Apakah anda yakin ingin menghapus akun ini?
+              </ThemedText>
+              <ThemedText className="font-oregular text-sm md:text-base text-gray-600">
+                Aksi ini tidak dapat dikembalikan
+              </ThemedText>
+            </View>
+          }
+          closeOnTouchOutside={false}
+          closeOnHardwareBackPress={false}
+          showCancelButton={true}
+          showConfirmButton={true}
+          cancelText="Tutup"
+          cancelButtonTextStyle={{
+            color: textColor,
+            fontFamily: "Outfit-Regular",
+            paddingHorizontal: 30,
+            paddingVertical: 10,
           }}
-          setShowAlert={setConfirmDel}
-          showAlert={confirmDel}
-        />
-
-        <ModalConfirmation
-          title="Verifikasi Pembuatan Akun"
-          message={` Apakah anda yakin ingin{" "}
-                ${selectedReq.isConfirmed ? "menyetujui" : "menolak"} permintaan
-                ini?`}
-          onConfirm={() => {
-            loading ? null : confirmReqAccount();
+          cancelButtonStyle={{
+            backgroundColor: outlineColor,
+            borderRadius: 10,
           }}
-          setShowAlert={setConfirmReq}
-          showAlert={confirmReq}
-          confirmText={loading ? "Loading..." : "Ya"}
+          confirmText={loading ? "Loading..." : "Hapus"}
+          confirmButtonTextStyle={{
+            fontFamily: "Outfit-Regular",
+            paddingHorizontal: 30,
+            paddingVertical: 10,
+          }}
+          confirmButtonStyle={{
+            backgroundColor: Colors.colorful.red,
+            borderRadius: 10,
+          }}
+          onCancelPressed={() => setConfirmDel(false)}
+          onConfirmPressed={() => (loading ? null : confirmDelAcc())}
         />
       </SafeAreaView>
       <Toast />
@@ -286,4 +270,4 @@ const AccountList = ({
   );
 };
 
-export default AccountListScreen;
+export default AccountListVendorScreen;
